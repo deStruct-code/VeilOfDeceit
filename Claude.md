@@ -5,8 +5,8 @@
 
 -----TODO-----
 [x] Create a folders using a chapter INFRASTRUCTURE
-[] 
-[]
+[x] Create a MVP with a mocks
+[] Deploy on a railway. Analyze all .json files to find a incompability 
 []
 []
 []
