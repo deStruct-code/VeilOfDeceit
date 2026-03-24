@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Fonts */
+  --font-display: 'Cinzel', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Inter', sans-serif;
+
+  /* Dark fantasy palette */
+  --bg:               #0c0d10;
+  --surface-header:   #111318;
+  --surface-boss:     #0f1016;
+  --surface-card:     #161820;
+  --surface-local:    #12141a;
+  --surface-ally:     #0e1014;
+  --surface-action:   #111318;
+
+  --border:           rgba(255,255,255,0.07);
+
+  --text-primary:     #e8e4dc;
+  --text-muted:       rgba(232, 228, 220, 0.45);
+  --text-dim:         rgba(232, 228, 220, 0.25);
+
+  /* HP / Energy */
+  --color-hp:         #c0392b;
+  --color-energy:     #8b6914;
+  --color-ready:      #2ecc71;
+  --color-danger:     #e74c3c;
+  --color-commit:     #8b0000;
+
+  /* Boss phases */
+  --phase-1:          #b5651d;
+  --phase-2:          #c0392b;
+  --phase-3:          #8e44ad;
+
+  /* Card types */
+  --color-attack:     #c0392b;
+  --color-defense:    #2980b9;
+  --color-support:    #27ae60;
+  --color-special:    #8e44ad;
+  --color-hidden:     #555;
+}
+
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font-family: inherit; }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }

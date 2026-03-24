@@ -1,0 +1,48 @@
+.zone {
+  padding: 0.7rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-action);
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.allyStatus { display: flex; align-items: center; gap: 0.5rem; }
+
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  transition: background 0.3s;
+}
+.dotReady   { background: var(--color-ready); box-shadow: 0 0 6px var(--color-ready); }
+.dotWaiting { background: var(--border); animation: pulse 1.5s ease-in-out infinite; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; } 50% { opacity: 1; }
+}
+
+.statusText {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.submitBtn {
+  padding: 0.55rem 1.6rem;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: var(--color-commit);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  text-transform: uppercase;
+}
+.submitBtn:not(:disabled):hover { opacity: 0.82; transform: scale(1.03); }
+.submitBtn:disabled { opacity: 0.3; cursor: default; }
+.submitted { background: #14532d !important; color: #4ade80 !important; opacity: 0.8; }
+.idle { }

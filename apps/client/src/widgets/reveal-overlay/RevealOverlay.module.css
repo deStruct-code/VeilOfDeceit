@@ -1,0 +1,109 @@
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.panel {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2rem;
+  width: min(440px, 90vw);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.phaseLabel {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.reveal   { color: var(--text-primary); }
+.boss_attack { color: var(--color-danger); }
+.new_cards { color: var(--color-energy); }
+.defeat   { color: var(--color-danger); }
+.victory  { color: #fbbf24; }
+
+.reveals {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.revealRow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+}
+
+.revealPlayer {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  min-width: 2.5rem;
+}
+.revealCard {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.revealDmg    { color: var(--color-danger); font-family: var(--font-mono); font-size: 0.75rem; margin-left: auto; }
+.revealShield { color: #60a5fa; font-family: var(--font-mono); font-size: 0.75rem; margin-left: auto; }
+.revealStatus { color: #a855f7; font-family: var(--font-mono); font-size: 0.75rem; margin-left: auto; }
+
+.log {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.logLine {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 0;
+}
+.damage { color: #f87171; }
+.status { color: #a855f7; }
+.boss   { color: var(--color-danger); }
+.system { color: var(--text-muted); }
+
+.btn {
+  padding: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: var(--color-commit);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  text-transform: uppercase;
+}
+.btn:hover { opacity: 0.85; transform: scale(1.01); }
+.btnEnd { background: #1e293b; border: 1px solid var(--border); }
