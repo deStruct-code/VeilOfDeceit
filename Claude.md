@@ -6,10 +6,10 @@
 -----TODO-----
 [x] Create a folders using a chapter INFRASTRUCTURE
 [x] Create a MVP with a mocks
-[] Deploy on a railway. Analyze all .json files to find a incompability 
-[]
-[]
-[]
+[x] Deploy on a railway. Analyze all .json files to find a incompability 
+[x] Make a CORS politic https://veilofdeceit-production.up.railway.app/ port 8000
+[x] Use a "https://veilofdeceit-production.up.railway.app/" link fill a .env files and make this app is acceptable by this link
+[] Fix the problem: when I npm run dev, its "Failed to reach the server." message
 
 -----INFO-----
 
