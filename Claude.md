@@ -154,6 +154,7 @@ veil-of-deceit/
 ├── tsconfig.base.json
 ├── README.md
 └── Claude.md
+└── railway.json
 
 apps/client/src/
 │
@@ -263,7 +264,6 @@ packages/shared/src/
 
 infra/
 │
-├── railway.json
 ├── docker/
 │   └── Dockerfile
 └── env/
