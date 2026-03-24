@@ -30,6 +30,7 @@ export interface Boss {
   hp: number
   maxHp: number
   phase: number
+  statuses?: StatusEffect[]
   nextAction: BossAction
 }
 
