@@ -1,8 +1,8 @@
 // ─── Card ────────────────────────────────────────────────────────────────────
 
-export type CardType = 'attack' | 'defense' | 'support' | 'special' | 'hidden'
+export type CardType = 'attack' | 'defense' | 'support' | 'special' | 'hidden' 
 
-export type StatusType = 'poison' | 'weakness' | 'strength' | 'regen' | 'shield'
+export type StatusType = 'poison' | 'weakness' | 'strength' | 'regen' | 'shield' | 'bleed'
 
 export interface StatusEffect {
   type:   StatusType

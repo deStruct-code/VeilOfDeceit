@@ -1,4 +1,4 @@
-import type { GameState } from '../../shared/types/game'
+import type { GameState } from '@veil/shared'
 import { useSubmitActionMutation } from '../../shared/api/gameApi'
 import styles from './SubmitAction.module.css'
 

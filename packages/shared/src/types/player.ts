@@ -11,7 +11,7 @@ export const MAX_DEBUFFS = 3
 
 // Какие статусы считаются баффами, какие дебаффами
 export const BUFF_TYPES:   readonly StatusEffect['type'][] = ['strength', 'regen', 'shield']
-export const DEBUFF_TYPES: readonly StatusEffect['type'][] = ['poison', 'weakness']
+export const DEBUFF_TYPES: readonly StatusEffect['type'][] = ['poison', 'weakness',]
 
 // ─── Player ──────────────────────────────────────────────────────────────────
 
