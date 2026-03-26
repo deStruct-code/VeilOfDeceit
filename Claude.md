@@ -11,8 +11,8 @@
 [x] Use a "https://veilofdeceit-production.up.railway.app/" link fill a .env files and make this app is acceptable by this link
 [x] Create a DB for games 
 [x] Create a fields with names for players
-[] Fix a build. Now its counting energy and player can play as many cards as possible. Need to follow the rule: you can play cards if the cost of its energy cost of current turn allows it.
-[] 
+[x] Fix a build. Now its counting energy and player can play as many cards as possible. Need to follow the rule: you can play cards if the cost of its energy cost of current turn allows it.
+[]
 
 -----INFO-----
 

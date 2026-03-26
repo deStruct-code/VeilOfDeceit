@@ -1,7 +1,7 @@
 {
   "$schema": "https://railway.com/railway.schema.json",
   "build": {
-    "command": "npm install --include=dev && VITE_USE_MOCKS=true npm run build --workspace=apps/client && npm run build --workspace=apps/server"
+    "command": "npm install --include=dev && VITE_USE_MOCKS=false npm run build --workspace=apps/client && npm run build --workspace=apps/server"
   },
   "deploy": {
     "startCommand": "npm run start --workspace=apps/server",
