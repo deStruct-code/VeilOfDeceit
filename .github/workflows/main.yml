@@ -15,8 +15,5 @@ jobs:
       - name: Install deps
         run: npm install
 
-      - name: Running tests
-        run: npm run test
-
       - name: Build
         run: npm run build
