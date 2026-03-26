@@ -19,8 +19,16 @@ export {
 } from './types/player'
 
 export type {
+  BossActionType,
+  BossSpecialType,
+  BossActionKind,
   BossAction,
-  Boss,
+  BossPhase,
+  BossDefinition,
+  BossState,
+} from './types/boss'
+
+export type {
   GamePhase,
   RevealEntry,
   LogEntry,

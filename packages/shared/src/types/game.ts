@@ -1,25 +1,6 @@
 import type { Card, StatusEffect } from './card'
 import type { Player } from './player'
-
-// ─── Boss ─────────────────────────────────────────────────────────────────────
-
-export interface BossAction {
-  type:    'attack' | 'status' | 'attack_status'
-  label:   string
-  damage?: number
-  status?: { type: StatusEffect['type']; stacks: number }
-  target:  'player-1' | 'player-2' | 'both'
-}
-
-export interface Boss {
-  id:       string
-  name:     string
-  hp:       number
-  maxHp:    number
-  phase:    number
-  statuses: StatusEffect[]
-  nextAction: BossAction
-}
+import type { BossState } from './boss'
 
 // ─── Game phase ───────────────────────────────────────────────────────────────
 
@@ -34,18 +15,18 @@ export type GamePhase =
 // ─── Reveal ───────────────────────────────────────────────────────────────────
 
 export interface RevealEntry {
-  playerId:      string
-  card:          Card
-  damageDealt?:  number
-  shieldGained?: number
+  playerId:       string
+  card:           Card
+  damageDealt?:   number
+  shieldGained?:  number
   statusApplied?: StatusEffect
 }
 
 // ─── Log ──────────────────────────────────────────────────────────────────────
 
 export interface LogEntry {
-  turn: number
-  text: string
+  turn:  number
+  text:  string
   type?: 'damage' | 'status' | 'boss' | 'system'
 }
 
@@ -55,7 +36,7 @@ export interface GameState {
   id:      string
   phase:   GamePhase
   turn:    number
-  boss:    Boss
+  boss:    BossState       // теперь BossState, не Boss
   players: [Player, Player]
   log:     LogEntry[]
   lastReveal?: RevealEntry[]

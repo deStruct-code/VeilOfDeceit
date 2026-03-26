@@ -8,7 +8,6 @@ export type {
   PlayerSlot,
   Player,
   BossAction,
-  Boss,
   GamePhase,
   RevealEntry,
   LogEntry,

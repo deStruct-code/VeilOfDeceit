@@ -1,5 +1,6 @@
-import type { Card, GameState, Player, StatusEffect } from "@veil/shared";
+import type { Card, GameState, Player, StatusEffect, BossState } from "@veil/shared";
 import { PLAYER_DEFAULTS } from "@veil/shared";
+import { createBossState, pickNextBossAction, checkPhaseTransition } from '../bosses/bossRegistry';
 
 // ─── Карты-шаблоны ────────────────────────────────────────────────────────────
 
@@ -171,26 +172,19 @@ export function createInitialGameState(
     gameId: string,
     name1 = 'Player 1',
     name2 = 'Player 2',
+    bossId = 'hollow_lich',
 ): GameState {
     return {
         id: gameId,
         phase: 'action',
         turn: 1,
-        boss: {
-            id: 'lich',
-            name: 'The Hollow Lich',
-            hp: 800,
-            maxHp: 800,
-            phase: 1,
-            statuses: [],
-            nextAction: { type: 'attack', label: 'Soul Drain', damage: 12, target: 'both' },
-        },
+        boss: createBossState(bossId),
         players: [
             makePlayer('player-1', name1),
             makePlayer('player-2', name2),
         ],
         log: [
-            { turn: 0, text: 'The Hollow Lich awakens. Darkness falls.', type: 'system' },
+            { turn: 0, text: 'Darkness falls...', type: 'system' as const },
         ],
     };
 }
@@ -337,7 +331,7 @@ export function resolveFullTurn(s: GameState): GameState {
               ? [p1]
               : [p2];
 
-    if (action.type === "attack" || action.type === "attack_status") {
+    if (action.kind === "attack" || action.kind === "attack_status") {
         for (const t of targets) {
             const dealt = applyDamage(t, action.damage ?? 0);
             addLog(
@@ -349,7 +343,7 @@ export function resolveFullTurn(s: GameState): GameState {
     }
 
     if (
-        (action.type === "status" || action.type === "attack_status") &&
+        (action.kind === "status" || action.kind === "attack_status") &&
         action.status
     ) {
         for (const t of targets) {
@@ -391,7 +385,7 @@ export function resolveFullTurn(s: GameState): GameState {
                 p.hand.splice(idx, 1);
             }
         }
-        // Добираем до handLimit
+        // Тянем одну карту за ход
         drawCards(p, 1);
 
         p.selectedCardId = [] as unknown as string[];
@@ -400,35 +394,14 @@ export function resolveFullTurn(s: GameState): GameState {
         p.energy = energyForTurn(s.turn, p.maxEnergy);
     }
 
-    s.boss.nextAction = randomBossAction(s.boss.phase);
+    // Проверяем переход фазы
+    const newPhase = checkPhaseTransition(s.boss);
+    if (newPhase) {
+        s.boss.phase = newPhase.phase;
+        addLog(s, `${s.boss.name}: ${newPhase.label}!`, 'boss');
+    }
+    s.boss.nextAction = pickNextBossAction(s.boss);
 
     s.phase = "action";
     return s;
 }
-
-// ─── Boss AI ────────────────────────────────────────────────────────────────
-
-function randomBossAction(
-    phase: number,
-): GameState["boss"]["nextAction"] {
-    const pool =
-        phase >= 2
-            ? BOSS_ACTION_POOL
-            : BOSS_ACTION_POOL.filter((a) => a.type === "attack");
-
-    return pool[Math.floor(Math.random() * pool.length)];
-}
-
-// ─── Boss pool ──────────────────────────────────────────────────────────────
-
-export const BOSS_ACTION_POOL: GameState["boss"]["nextAction"][] = [
-    { type: "attack", label: "Soul Drain", damage: 12, target: "both" },
-    { type: "attack", label: "Bone Crush", damage: 18, target: "player-1" },
-    { type: "attack", label: "Dark Lash", damage: 15, target: "player-2" },
-    {
-        type: "status",
-        label: "Curse",
-        status: { type: "poison", stacks: 3 },
-        target: "both",
-    },
-];
