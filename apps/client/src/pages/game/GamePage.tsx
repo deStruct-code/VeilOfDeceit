@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { useParams } from 'react-router-dom'
 import { useGetGameQuery, useSubmitActionMutation, useResetGameMutation } from '../../shared/api/gameApi'
 import { BossPanel } from '../../widgets/boss-panel/BossPanel'
 import { PlayerHand } from '../../widgets/player-hand/PlayerHand'
 import { SubmitAction } from '../../features/submit-action/SubmitAction'
 import { RevealOverlay } from '../../widgets/reveal-overlay/RevealOverlay'
+import { getRoomPlayerSlot } from '../../shared/lib/playerSlot'
 import styles from './GamePage.module.css'
 
-const GAME_ID = 'game-001'
-const LOCAL_PLAYER_ID = 'player-1'
-
 export function GamePage() {
-  const { data: game, isLoading, isError } = useGetGameQuery(GAME_ID, {
-    pollingInterval: 2000,
-  })
-  const [, { reset: resetQuery }] = useSubmitActionMutation({ fixedCacheKey: 'submit' })
+  const params = useParams()
+  const gameId = useMemo(() => String(params.code ?? '').toUpperCase(), [params.code])
+  const localPlayerId = useMemo(() => getRoomPlayerSlot(gameId) ?? 'player-1', [gameId])
+
+  const { data: game, isLoading, isError } = useGetGameQuery(gameId, { pollingInterval: 1000 })
   const [resetGame] = useResetGameMutation()
 
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null)
@@ -36,7 +36,7 @@ export function GamePage() {
   const handleContinue = async () => {
     if (!game) return
     if (game.phase === 'defeat' || game.phase === 'victory') {
-      await resetGame()
+      await resetGame({ gameId })
       setSelectedCardId(null)
     }
     setShowOverlay(false)
@@ -51,8 +51,8 @@ export function GamePage() {
     <div className={styles.loading}>Failed to reach the server.</div>
   )
 
-  const localPlayer = game.players.find(p => p.id === LOCAL_PLAYER_ID)!
-  const allyPlayer = game.players.find(p => p.id !== LOCAL_PLAYER_ID)!
+  const localPlayer = game.players.find(p => p.id === localPlayerId)!
+  const allyPlayer = game.players.find(p => p.id !== localPlayerId)!
   const recentLogs = [...game.log].slice(-3)
 
   return (
@@ -62,7 +62,7 @@ export function GamePage() {
         <span className={`${styles.phase} ${styles[game.phase]}`}>
           {game.phase.replace('_', ' ')}
         </span>
-        <button className={styles.resetBtn} onClick={async () => { await resetGame(); setSelectedCardId(null) }}>
+        <button className={styles.resetBtn} onClick={async () => { await resetGame({ gameId }); setSelectedCardId(null) }}>
           ↺
         </button>
       </header>
@@ -96,11 +96,11 @@ export function GamePage() {
       <SubmitAction
         game={game}
         selectedCardId={selectedCardId}
-        playerId={LOCAL_PLAYER_ID}
+        playerId={localPlayerId}
       />
 
       {showOverlay && (
-        <RevealOverlay game={game} onContinue={handleContinue} />
+        <RevealOverlay game={game} localPlayerId={localPlayerId} onContinue={handleContinue} />
       )}
     </div>
   )

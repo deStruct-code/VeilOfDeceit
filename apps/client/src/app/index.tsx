@@ -1,11 +1,11 @@
 import './global.css'
 import { AppProviders } from './providers/AppProviders'
-import { GamePage } from '../pages/game/GamePage'
+import { AppRouter } from './router/AppRouter'
 
 export function App() {
   return (
     <AppProviders>
-      <GamePage />
+      <AppRouter />
     </AppProviders>
   )
 }

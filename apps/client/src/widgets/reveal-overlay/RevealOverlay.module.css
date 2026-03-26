@@ -107,3 +107,8 @@
 }
 .btn:hover { opacity: 0.85; transform: scale(1.01); }
 .btnEnd { background: #1e293b; border: 1px solid var(--border); }
+
+/* подсветка строки локального игрока */
+.revealRowLocal .revealPlayer {
+  color: var(--color-ready, #4ade80);
+}
