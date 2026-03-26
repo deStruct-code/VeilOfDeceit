@@ -9,7 +9,9 @@
 [x] Deploy on a railway. Analyze all .json files to find a incompability 
 [x] Make a CORS politic https://veilofdeceit-production.up.railway.app/ port 8000
 [x] Use a "https://veilofdeceit-production.up.railway.app/" link fill a .env files and make this app is acceptable by this link
-[] Fix the problem: when I npm run dev, its "Failed to reach the server." message
+[x] Create a DB for games 
+[x] Create a fields with names for players
+[] 
 
 -----INFO-----
 
@@ -18,7 +20,7 @@ Name: Veil of Deceit
 Genre: Dark Fantasy / Card Game / Co-op / Bluff
 Platforms: web app
 Players: 2
-Session Duration: (to define)
+Session Duration: (3-5 min)
 Target Audience: (to define)
 
 2. High Concept
@@ -27,21 +29,19 @@ A two-player cooperative card game where players fight a boss together while hid
 
 3. Core Gameplay Loop
 Players draw cards
-Players discuss strategy (optional / unreliable)
 Players choose actions secretly
 Actions are revealed and resolved
 Boss performs action
 Apply effects (damage, status, etc.)
 Repeat until:
-    Boss is defeated or
-    Players lose
+    Boss is defeated (hp = 0) or
+    All players are defeated (hp = 0)
 
 4. Core Mechanics
 Hidden hands
-Bluff / deception
 Shared objective (defeat boss)
 Conflicting incentives (to define)
-Resource management (to define)
+Resource management (Cards are limited and their number is fixed)
 Turn-based system
 
 6. Card System

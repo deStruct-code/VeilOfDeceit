@@ -43,6 +43,16 @@ function CardItem({ card, selected, onSelect, disabled }: {
   )
 }
 
+function CardBack() {
+  return (
+    <div className={styles.cardBack}>
+      <div className={styles.cardBackInner}>
+        <span className={styles.cardBackGlyph}>⚔</span>
+      </div>
+    </div>
+  )
+}
+
 export function PlayerHand({ player, isLocal, selectedCardId, onSelect }: Props) {
   const hpPct = (player.hp / player.maxHp) * 100
   const hpColor = hpPct > 50 ? 'var(--color-hp)' : hpPct > 25 ? '#f59e0b' : '#ef4444'
@@ -86,15 +96,20 @@ export function PlayerHand({ player, isLocal, selectedCardId, onSelect }: Props)
       </div>
 
       <div className={styles.hand}>
-        {player.hand.map((card) => (
-          <CardItem
-            key={card.id}
-            card={card}
-            selected={selectedCardId === card.id}
-            onSelect={() => onSelect(card.id)}
-            disabled={!isLocal || player.submitted || card.type === 'hidden'}
-          />
-        ))}
+        {isLocal
+          ? player.hand.map((card) => (
+              <CardItem
+                key={card.id}
+                card={card}
+                selected={selectedCardId === card.id}
+                onSelect={() => onSelect(card.id)}
+                disabled={player.submitted || card.type === 'hidden'}
+              />
+            ))
+          : player.hand.map((_, i) => (
+              <CardBack key={i} />
+            ))
+        }
       </div>
     </div>
   )

@@ -7,14 +7,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      // Резолвим @veil/shared напрямую в исходники — не нужна сборка пакета
+      '@veil/shared': path.resolve(__dirname, '../../packages/shared/src/index.ts'),
     },
   },
   server: {
     port: 3000,
-  },
-  define: {
-    'import.meta.env.VITE_API_URL': JSON.stringify(
-      process.env.VITE_API_URL || 'http://localhost:8000'
-    ),
   },
 })

@@ -3,6 +3,7 @@ import styles from './RevealOverlay.module.css'
 
 interface Props {
   game: GameState
+  localPlayerId: string
   onContinue: () => void
 }
 
@@ -14,9 +15,16 @@ const phaseLabel: Record<string, string> = {
   victory: 'Victory',
 }
 
-export function RevealOverlay({ game, onContinue }: Props) {
+export function RevealOverlay({ game, localPlayerId, onContinue }: Props) {
   const isEnd = game.phase === 'defeat' || game.phase === 'victory'
   const recentLogs = [...game.log].reverse().slice(0, 5)
+
+  // Имя по playerId из реального состояния игры
+  function playerLabel(playerId: string): string {
+    const player = game.players.find(p => p.id === playerId)
+    const name = player?.name ?? playerId
+    return playerId === localPlayerId ? `${name} (you)` : name
+  }
 
   return (
     <div className={styles.overlay}>
@@ -28,8 +36,8 @@ export function RevealOverlay({ game, onContinue }: Props) {
         {game.lastReveal && game.lastReveal.length > 0 && (
           <div className={styles.reveals}>
             {game.lastReveal.map((r) => (
-              <div key={r.playerId} className={styles.revealRow}>
-                <span className={styles.revealPlayer}>{r.playerId === 'player-1' ? 'You' : 'Ally'}</span>
+              <div key={r.playerId} className={`${styles.revealRow} ${r.playerId === localPlayerId ? styles.revealRowLocal : ''}`}>
+                <span className={styles.revealPlayer}>{playerLabel(r.playerId)}</span>
                 <span className={styles.revealCard}>{r.card.name}</span>
                 {r.damageDealt != null && (
                   <span className={styles.revealDmg}>−{r.damageDealt} to boss</span>
