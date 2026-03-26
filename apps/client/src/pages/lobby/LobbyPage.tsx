@@ -63,13 +63,13 @@ export function LobbyPage() {
                 onChange={(e) => { setNickname(e.target.value); setNicknameSaved(false) }}
                 onBlur={handleNicknameBlur}
                 onKeyDown={(e) => e.key === 'Enter' && handleNicknameBlur()}
-                placeholder="Придумай имя..."
+                placeholder="Введите ваш никнейм"
                 maxLength={24}
                 autoCorrect="off"
                 spellCheck={false}
               />
               {nicknameSaved && (
-                <span className={styles.savedBadge}>✓ сохранено</span>
+                <span className={styles.savedBadge}> ✓ сохранено</span>
               )}
             </div>
           </div>

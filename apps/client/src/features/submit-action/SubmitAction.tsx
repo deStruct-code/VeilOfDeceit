@@ -4,20 +4,20 @@ import styles from './SubmitAction.module.css'
 
 interface Props {
   game: GameState
-  selectedCardId: string | null
+  selectedCardIds: string[]
   playerId: string
 }
 
-export function SubmitAction({ game, selectedCardId, playerId }: Props) {
+export function SubmitAction({ game, selectedCardIds, playerId }: Props) {
   const [submitAction, { isLoading }] = useSubmitActionMutation()
   const me = game.players.find(p => p.id === playerId)!
   const ally = game.players.find(p => p.id !== playerId)!
 
-  const canSubmit = !!selectedCardId && !me.submitted && !isLoading
+  const canSubmit = selectedCardIds.length > 0 && !me.submitted && !isLoading
 
   const handleSubmit = async () => {
     if (!canSubmit) return
-    await submitAction({ gameId: game.id, playerId, cardId: selectedCardId! })
+    await submitAction({ gameId: game.id, playerId, cardIds: selectedCardIds })
   }
 
   return (
@@ -38,9 +38,7 @@ export function SubmitAction({ game, selectedCardId, playerId }: Props) {
           ? 'Resolving...'
           : me.submitted
             ? '✓ Committed'
-            : selectedCardId
-              ? 'Commit'
-              : 'Pick a card'}
+            : selectedCardIds.length > 0 ? 'Commit' : 'Pick cards'}
       </button>
     </div>
   )

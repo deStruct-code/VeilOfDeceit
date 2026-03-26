@@ -1,5 +1,5 @@
 import { http, HttpResponse, delay } from 'msw'
-import type { GameState, Player, StatusEffect } from '../shared/types/game'
+import type {GameState, Player, StatusEffect} from "@veil/shared";
 import { initialGameState, drawHand, randomBossAction } from './game.mock'
 
 // Deep clone helper
@@ -131,6 +131,7 @@ function resolveFullTurn(s: GameState): GameState {
     const dmg = tickPoison(p)
     if (dmg > 0) addLog(s, `${p.name} takes ${dmg} poison damage.`, 'damage')
   }
+
 
   if (checkDefeat(s)) {
     s.phase = 'defeat'

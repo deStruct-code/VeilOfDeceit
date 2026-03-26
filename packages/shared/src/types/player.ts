@@ -41,7 +41,7 @@ export interface Player {
   statuses: StatusEffect[]
 
   // Состояние хода
-  selectedCardId: string | null   // выбранная карта до сабмита
+  selectedCardId: string[]  // выбранные карты до сабмита
   submitted:      boolean         // подтвердил ли ход
 
   // Живой?
@@ -53,6 +53,6 @@ export interface Player {
 export const PLAYER_DEFAULTS = {
   maxHp:      50,
   handLimit:  7,
-  startCards: 5,   // сколько карт тянуть в начале игры
+  startCards: 3,   // сколько карт тянуть в начале игры
   maxEnergy:  10,
 } as const

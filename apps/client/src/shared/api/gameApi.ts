@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import type { GameState } from '../types/game'
+import type { GameState } from '@veil/shared'
 
 const API_URL = (import.meta.env.VITE_API_URL ?? '').replace(/\/$/, '')
 const USE_MOCKS = import.meta.env.VITE_USE_MOCKS === 'true'
@@ -17,11 +17,11 @@ export const gameApi = createApi({
       query: (id) => `/game/${id}`,
       providesTags: ['Game'],
     }),
-    submitAction: builder.mutation<GameState, { gameId: string; playerId: string; cardId: string }>({
-      query: ({ gameId, playerId, cardId }) => ({
+    submitAction: builder.mutation<GameState, { gameId: string; playerId: string; cardIds: string[] }>({
+      query: ({ gameId, playerId, cardIds }) => ({
         url: `/game/${gameId}/action`,
         method: 'POST',
-        body: { playerId, cardId },
+        body: { playerId, cardIds },
       }),
       invalidatesTags: ['Game'],
     }),
