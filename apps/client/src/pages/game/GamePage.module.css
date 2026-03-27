@@ -1,27 +1,389 @@
+/* ── Root layout ─────────────────────────────────────────────────── */
+
 .layout {
   position: relative;
-  display: flex;
-  flex-direction: column;
+  width: 100dvw;
   height: 100dvh;
+  overflow: hidden;
   background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-sans);
+
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows:
+    auto          /* row 1: log | boss | info */
+    1fr           /* row 2-4: arena */
+    auto          /* row 5: player bars */
+    auto          /* row 6: energy */
+    auto;         /* row 7: hands + submit */
+}
+
+/* ── Row 1 ───────────────────────────────────────────────────────── */
+
+.log {
+  grid-column: 1;
+  grid-row: 1;
+  padding: 0.6rem 0.75rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.2rem;
   overflow: hidden;
 }
 
-.header {
+.bossCell {
+  grid-column: 2;
+  grid-row: 1;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1rem;
+  background: var(--surface-boss);
+  gap: 0.5rem;
+}
+
+.infoCell {
+  grid-column: 3;
+  grid-row: 1;
+  padding: 0.6rem 0.75rem;
+  border-left: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+/* ── Row 2-4: Arena ──────────────────────────────────────────────── */
+
+.arenaLeft {
+  grid-column: 1;
+  grid-row: 2 / 5;
+  border-right: 1px solid var(--border);
+  /* зарезервировано для кастомных ассетов арены */
+  background: var(--surface-local);
+}
+
+.arenaCenter {
+  grid-column: 2;
+  grid-row: 2 / 5;
+  position: relative;
+  background-image: url('/assets/backgrounds/bg1.webp');
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.45rem 1.5rem;
-  background: var(--surface-header);
-  border-bottom: 1px solid var(--border);
+  justify-content: center;
+}
+
+.arenaPlaceholder {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-align: center;
+  user-select: none;
+}
+
+.arenaRight {
+  grid-column: 3;
+  grid-row: 2 / 4;   /* row 2-3, deck занимает отдельный row 3 */
+  border-left: 1px solid var(--border);
+  background: var(--surface-ally);
+}
+
+.deckCell {
+  grid-column: 3;
+  grid-row: 4;
+  border-left: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  padding: 0.6rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  background: var(--surface-ally);
+}
+
+/* ── Row 5: Player bars ──────────────────────────────────────────── */
+
+.playerBars {
+  grid-column: 1 / 4;
+  grid-row: 5;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--border);
+}
+
+.playerBar {
+  padding: 0.45rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.playerBar + .playerBar {
+  border-left: 1px solid var(--border);
+}
+
+/* ── Row 6: Energy ───────────────────────────────────────────────── */
+
+.energyRow {
+  grid-column: 1 / 4;
+  grid-row: 6;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--border);
+}
+
+.energyCell {
+  padding: 0.35rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.energyCell + .energyCell {
+  border-left: 1px solid var(--border);
+}
+
+/* ── Row 7: Hands ────────────────────────────────────────────────── */
+
+.handsRow {
+  grid-column: 1 / 4;
+  grid-row: 7;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--border);
+  min-height: 0;
+}
+
+.handCell {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.handCell + .handCell {
+  border-left: 1px solid var(--border);
+}
+
+/* ── Shared components ───────────────────────────────────────────── */
+
+.playerName {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hpGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.hpBar {
+  flex: 1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.hpFill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+.hpText {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.pip {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
   flex-shrink: 0;
+}
+
+.pipActive {
+  background: var(--color-energy);
+  border-color: var(--color-energy);
+}
+
+.submittedBadge {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--color-ready);
+  margin-left: auto;
+}
+
+/* ── Log entries ─────────────────────────────────────────────────── */
+
+.logEntry {
+  margin: 0;
+  font-size: 0.65rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+.logTurn {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  margin-right: 0.3rem;
+}
+
+.damage { color: #f87171; }
+.status { color: #a855f7; }
+.boss   { color: #f97316; }
+.system { color: var(--text-muted); }
+
+/* ── Boss components ─────────────────────────────────────────────── */
+
+.bossName {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.bossHpRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.bossHpBar {
+  flex: 1;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bossHpFill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bossHpText {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.bossNextAction {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.72rem;
+}
+
+.actionDmg    { color: var(--color-danger); font-family: var(--font-mono); font-size: 0.68rem; }
+.actionTarget { color: var(--text-dim);     font-family: var(--font-mono); font-size: 0.63rem; }
+
+/* ── Info cell ───────────────────────────────────────────────────── */
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoLabel {
+  color: var(--text-dim);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.infoValue {
+  color: var(--text-muted);
+  font-size: 0.65rem;
+}
+
+/* ── Deck widget ─────────────────────────────────────────────────── */
+
+.deckIcon {
+  width: 32px;
+  height: 44px;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+.deckCount {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.deckLabel {
+  font-size: 0.55rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+
+/* ── Status badges ───────────────────────────────────────────────── */
+
+.statusBadge {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Header controls (turn + phase + reset) ──────────────────────── */
+
+.bossControls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  justify-content: center;
 }
 
 .turnLabel {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text-dim);
@@ -29,10 +391,9 @@
 
 .phase {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  transition: color 0.3s;
 }
 
 .action      { color: var(--phase-1); }
@@ -48,51 +409,20 @@
   border-radius: 4px;
   color: var(--text-dim);
   font-size: 0.85rem;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s, border-color 0.2s;
   padding: 0;
-}
-.resetBtn:hover { color: var(--text-muted); border-color: var(--text-dim); }
-
-.log {
-  padding: 0.5rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-  min-height: 52px;
+  margin-left: auto;
+  transition: color 0.2s;
 }
 
-.logEntry {
-  margin: 0;
-  font-size: 0.73rem;
-  line-height: 1.4;
-}
-.logTurn {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  color: var(--text-dim);
-  margin-right: 0.4rem;
-}
-.damage { color: #f87171; }
-.status { color: #a855f7; }
-.boss   { color: #f97316; }
-.system { color: var(--text-muted); }
+.resetBtn:hover { color: var(--text-muted); }
 
-.hands {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  overflow: hidden;
-  min-height: 0;
-}
+/* ── Loading ─────────────────────────────────────────────────────── */
 
 .loading {
   height: 100dvh;
@@ -105,6 +435,7 @@
   background: var(--bg);
   letter-spacing: 0.05em;
 }
+
 .dots { animation: blink 1.2s steps(3, end) infinite; }
 @keyframes blink {
   0%, 100% { opacity: 0; } 50% { opacity: 1; }

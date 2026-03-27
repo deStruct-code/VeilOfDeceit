@@ -13,7 +13,15 @@
 [x] Create a fields with names for players
 [x] Fix a build. Now its counting energy and player can play as many cards as possible. Need to follow the rule: you can play cards if the cost of its energy cost of current turn allows it.
 [x] Fix alias '@veil/shared/'
- 
+[x] Create a customazible battleground, I wanna create an arena assets by myself. The schema of battleground is 
+last actions | BOSS | info
+ARENA | ARENA | ARENA 
+ARENA | ARENA | deck
+ARENA | ARENA | ARENA
+Nickname HP | ALly`s nickname HP
+Energy      | Ally`s enegry
+Hands       | Ally`s hands
+[] Fix bug. If Player has a 2cost cards on a first turn, he can`t do nothing. Make a button option 'Skip' in every turn.  
 -----INFO-----
 
 1. General Information
