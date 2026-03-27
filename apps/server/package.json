@@ -9,6 +9,7 @@
     "dev": "npx ts-node-dev --respawn --transpile-only src/main.ts"
   },
   "dependencies": {
+    "@veil/shared": "*",
     "dotenv": "^17.3.1",
     "express": "^4.19.0",
     "pg": "^8.12.0",

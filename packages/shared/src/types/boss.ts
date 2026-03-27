@@ -1,5 +1,4 @@
 import type { StatusEffect } from './card'
-import type { Player } from './player'
 
 // ─── Типы действий босса ──────────────────────────────────────────────────────
 
