@@ -1,4 +1,4 @@
-import type {GameState, Player, StatusEffect} from "@veil/shared";
+import type {GameState} from "@veil/shared";
 
 export const ALL_CARDS: Card[] = [
   { id: 'slash',       name: 'Slash',       type: 'attack',  value: 8,  cost: 1 },

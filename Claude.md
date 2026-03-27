@@ -22,6 +22,7 @@ Nickname HP | ALly`s nickname HP
 Energy      | Ally`s enegry
 Hands       | Ally`s hands
 [] Fix bug. If Player has a 2cost cards on a first turn, he can`t do nothing. Make a button option 'Skip' in every turn.  
+[] Create a timer. 20 sec for a turn. If player choose nothing so 'Skip' button is playing.
 -----INFO-----
 
 1. General Information

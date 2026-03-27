@@ -9,7 +9,7 @@
     "dev": "npm run dev --workspace=apps/client",
     "dev:client": "npm run dev --workspace=apps/client",
     "dev:server": "npm run dev --workspace=apps/server",
-    "build": "npm run build --workspace=packages/shared && VITE_USE_MOCKS=false npm run build --workspace=apps/client && npm run build --workspace=apps/server",
+    "build": "npm run build --workspace=packages/shared && cross-env VITE_USE_MOCKS=false npm run build --workspace=apps/client && npm run build --workspace=apps/server",
     "build:client": "VITE_USE_MOCKS=false npm run build --workspace=apps/client",
     "build:server": "npm run build --workspace=packages/shared && npm run build --workspace=apps/server",
     "test": "vitest run"
@@ -17,7 +17,8 @@
   "devDependencies": {
     "@types/connect": "^3.4.38",
     "@types/express": "^5.0.6",
-    "@types/node": "^25.5.0"
+    "@types/node": "^25.5.0",
+    "cross-env": "^10.1.0"
   },
   "dependencies": {
     "vitest": "^4.1.1"

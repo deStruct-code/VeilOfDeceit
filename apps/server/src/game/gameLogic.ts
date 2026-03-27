@@ -1,4 +1,4 @@
-import type { Card, GameState, Player, StatusEffect, BossState } from "@veil/shared";
+import type { Card, GameState, Player, StatusEffect } from "@veil/shared";
 import { PLAYER_DEFAULTS } from "@veil/shared";
 import { createBossState, pickNextBossAction, checkPhaseTransition } from '../bosses/bossRegistry';
 
