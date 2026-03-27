@@ -7,12 +7,12 @@ import type { BossDefinition } from '@veil/shared'
 
 export const HOLLOW_LICH: BossDefinition = {
   id:   'hollow_lich',
-  name: 'The Hollow Lich',
-  lore: 'An ancient sorcerer stripped of flesh, sustained by stolen souls.',
+  name: 'Примитивный зомби',
+  lore: 'Восставший из ада. Желающий кушать. ',
 
-  maxHp: 800,
+  maxHp: 100,
 
-  spawnMessage: 'The Hollow Lich awakens. Darkness falls.',
+  spawnMessage: 'Зомби просыпается. Гробница трещит от его могучих ударов.',
 
   openingAction: {
     kind:   'attack',
