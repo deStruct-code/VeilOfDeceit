@@ -7,27 +7,26 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v4  # обновил с v3
 
-      - name: Install deps
-        run: npm install
+    - name: Install deps
+      run: npm install
 
-      - name: Build
-        run: npm run build
+    - name: Build
+      run: npm run build
 
   notify-telegram:
     runs-on: ubuntu-latest
-    # Запускается всегда, независимо от успеха/фейла build
+    needs: build  # ждёт окончания билда
     if: always()
     steps:
     - name: Send Telegram Notification
-      uses: appleboy/telegram-action@v0.1.7
+      uses: appleboy/telegram-action@v0.1.8
       with:
-        to: 220894408
-        token: 8669941278:AAE0uDdyTtcZSb7z8ZWBgKmM8SjfUyltLA8 
+        to: ${{ secrets.TELEGRAM_CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         message: |
           🚀 **CI Pipeline завершён**
           
