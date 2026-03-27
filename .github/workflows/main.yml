@@ -17,3 +17,24 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  notify-telegram:
+    runs-on: ubuntu-latest
+    # Запускается всегда, независимо от успеха/фейла build
+    if: always()
+    steps:
+    - name: Send Telegram Notification
+      uses: appleboy/telegram-action@v0.1.7
+      with:
+        to: 220894408
+        token: 8669941278:AAE0uDdyTtcZSb7z8ZWBgKmM8SjfUyltLA8 
+        message: |
+          🚀 **CI Pipeline завершён**
+          
+          **Репозиторий**: ${{ github.repository }}
+          **Бранч**: ${{ github.ref_name }}
+          **Коммит**: ${{ github.sha }}
+          **Статус**: ${{ job.status }}
+          **Автор**: ${{ github.actor }}
+          
+          🔗 [Посмотреть коммит](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
