@@ -112,8 +112,8 @@ function EnergyCell({ player }: { player: Player }) {
       {visible.map((active, i) => (
         <span key={i} className={`${styles.pip} ${active ? styles.pipActive : ''}`} />
       ))}
-      <span style={{ fontSize: '0.6rem', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)', marginLeft: '0.25rem' }}>
-        {player.energy}⚡
+      <span style={{ fontSize: '1rem', color: 'var(--text-dim)', fontFamily: 'var(--font-mono)', marginLeft: '0.25rem' }}>
+        {player.energy} Энергия: ⚡
       </span>
     </div>
   )
@@ -128,9 +128,9 @@ function DeckCell({ player }: { player: Player }) {
         {(player.deck as any[]).length}
       </div>
       <span className={styles.deckCount}>{(player.deck as any[]).length}</span>
-      <span className={styles.deckLabel}>deck</span>
+      <span className={styles.deckLabel}>Колода</span>
       <span className={styles.deckCount} style={{ color: 'var(--text-dim)' }}>
-        +{(player.discardPile as any[]).length} disc
+        +{(player.discardPile as any[]).length} Сброс
       </span>
     </div>
   )
