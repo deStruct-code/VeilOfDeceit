@@ -1,12 +1,16 @@
-import type { Card, GameState, Player, StatusEffect } from "@veil/shared";
-import { PLAYER_DEFAULTS } from "@veil/shared";
-import { createBossState, pickNextBossAction, checkPhaseTransition } from '../bosses/bossRegistry';
+import type {Card, GameState, Player, StatusEffect} from "@veil/shared";
+import {PLAYER_DEFAULTS} from "@veil/shared";
+import {
+    createBossState,
+    pickNextBossAction,
+    checkPhaseTransition,
+} from "../bosses/bossRegistry";
 
 // ─── Карты-шаблоны ────────────────────────────────────────────────────────────
 
 export const CARD_TEMPLATES: Omit<Card, "id">[] = [
-    { baseId: "slash", name: "Slash", type: "attack", value: 8, cost: 1 },
-    { baseId: "heavy", name: "Heavy Blow", type: "attack", value: 14, cost: 2 },
+    {baseId: "slash", name: "Slash", type: "attack", value: 8, cost: 1},
+    {baseId: "heavy", name: "Heavy Blow", type: "attack", value: 14, cost: 2},
     {
         baseId: "bleed",
         name: "Bleed",
@@ -14,9 +18,9 @@ export const CARD_TEMPLATES: Omit<Card, "id">[] = [
         value: 5,
         cost: 1,
         effect: "Poison ×2",
-        statusEffect: { type: "poison", stacks: 2 },
+        statusEffect: {type: "poison", stacks: 2},
     },
-    { baseId: "parry", name: "Parry", type: "defense", value: 6, cost: 1 },
+    {baseId: "parry", name: "Parry", type: "defense", value: 6, cost: 1},
     {
         baseId: "shield_wall",
         name: "Shield Wall",
@@ -39,7 +43,7 @@ export const CARD_TEMPLATES: Omit<Card, "id">[] = [
         value: 0,
         cost: 1,
         effect: "Boss: Weakness ×2",
-        statusEffect: { type: "weakness", stacks: 2 },
+        statusEffect: {type: "weakness", stacks: 2},
     },
     {
         baseId: "surge",
@@ -110,17 +114,17 @@ function addLog(
     text: string,
     type: GameState["log"][0]["type"] = "system",
 ) {
-    s.log.push({ turn: s.turn, text, type });
+    s.log.push({turn: s.turn, text, type});
 }
 
 // ─── Статусы ──────────────────────────────────────────────────────────────────
 
-function applyStatus(target: { statuses: StatusEffect[] }, status: StatusEffect) {
+function applyStatus(target: {statuses: StatusEffect[]}, status: StatusEffect) {
     const existing = target.statuses.find((s) => s.type === status.type);
     if (existing) {
         existing.stacks += status.stacks;
     } else {
-        target.statuses.push({ ...status });
+        target.statuses.push({...status});
     }
 }
 
@@ -170,29 +174,24 @@ export function clone<T>(x: T): T {
 
 export function createInitialGameState(
     gameId: string,
-    name1 = 'Player 1',
-    name2 = 'Player 2',
-    bossId = 'hollow_lich',
+    name1 = "Player 1",
+    name2 = "Player 2",
+    bossId = "hollow_lich",
 ): GameState {
     return {
         id: gameId,
-        phase: 'action',
+        phase: "action",
         turn: 1,
         boss: createBossState(bossId),
-        players: [
-            makePlayer('player-1', name1),
-            makePlayer('player-2', name2),
-        ],
-        log: [
-            { turn: 0, text: 'Darkness falls...', type: 'system' as const },
-        ],
+        players: [makePlayer("player-1", name1), makePlayer("player-2", name2)],
+        log: [{turn: 0, text: "Darkness falls...", type: "system" as const}],
     };
 }
 
 function makePlayer(id: "player-1" | "player-2", name: string): Player {
     const deck = makeDeck();
 
-    const player: Player & { _spentEnergy?: number } = {
+    const player: Player & {_spentEnergy?: number} = {
         id,
         name,
         hp: PLAYER_DEFAULTS.maxHp,
@@ -228,8 +227,12 @@ export function resolveFullTurn(s: GameState): GameState {
     const [p1, p2] = s.players;
 
     // selectedCardId — массив id выбранных карт
-    const p1Cards = p1.hand.filter(c => (p1.selectedCardId as unknown as string[]).includes(c.id));
-    const p2Cards = p2.hand.filter(c => (p2.selectedCardId as unknown as string[]).includes(c.id));
+    const p1Cards = p1.hand.filter((c) =>
+        (p1.selectedCardId as unknown as string[]).includes(c.id),
+    );
+    const p2Cards = p2.hand.filter((c) =>
+        (p2.selectedCardId as unknown as string[]).includes(c.id),
+    );
 
     s.phase = "reveal";
     s.lastReveal = [];
@@ -245,7 +248,11 @@ export function resolveFullTurn(s: GameState): GameState {
         for (const card of cards) {
             // Защитная проверка энергии
             if (spentEnergy + card.cost > player.energy) {
-                addLog(s, `${player.name} cannot afford ${card.name}`, "system");
+                addLog(
+                    s,
+                    `${player.name} cannot afford ${card.name}`,
+                    "system",
+                );
                 continue;
             }
             spentEnergy += card.cost;
@@ -255,57 +262,57 @@ export function resolveFullTurn(s: GameState): GameState {
                 card,
             };
 
-        if (card.type === "attack") {
-            const weakness =
-                s.boss.statuses.find((st) => st.type === "weakness")?.stacks ??
-                0;
+            if (card.type === "attack") {
+                const weakness =
+                    s.boss.statuses.find((st) => st.type === "weakness")
+                        ?.stacks ?? 0;
 
-            const dmg =
-                card.value +
-                weakness * 2 +
-                ((player as any)._empowerBonus ?? 0);
+                const dmg =
+                    card.value +
+                    weakness * 2 +
+                    ((player as any)._empowerBonus ?? 0);
 
-            s.boss.hp = Math.max(0, s.boss.hp - dmg);
+                s.boss.hp = Math.max(0, s.boss.hp - dmg);
 
-            reveal.damageDealt = dmg;
+                reveal.damageDealt = dmg;
 
-            addLog(
-                s,
-                `${player.name} plays ${card.name} — ${dmg} dmg`,
-                "damage",
-            );
-        }
+                addLog(
+                    s,
+                    `${player.name} plays ${card.name} — ${dmg} dmg`,
+                    "damage",
+                );
+            }
 
-        if (card.type === "defense") {
-            player.shield += card.value;
+            if (card.type === "defense") {
+                player.shield += card.value;
 
-            reveal.shieldGained = card.value;
+                reveal.shieldGained = card.value;
 
-            addLog(
-                s,
-                `${player.name} gains ${card.value} shield`,
-                "system",
-            );
-        }
+                addLog(
+                    s,
+                    `${player.name} gains ${card.value} shield`,
+                    "system",
+                );
+            }
 
-        if (card.type === "support") {
-            (other as any)._empowerBonus =
-                ((other as any)._empowerBonus ?? 0) + 4;
+            if (card.type === "support") {
+                (other as any)._empowerBonus =
+                    ((other as any)._empowerBonus ?? 0) + 4;
 
-            addLog(s, `${player.name} empowers ally`, "system");
-        }
+                addLog(s, `${player.name} empowers ally`, "system");
+            }
 
-        if (card.type === "special" && card.statusEffect) {
-            applyStatus(s.boss, card.statusEffect);
+            if (card.type === "special" && card.statusEffect) {
+                applyStatus(s.boss, card.statusEffect);
 
-            reveal.statusApplied = card.statusEffect;
+                reveal.statusApplied = card.statusEffect;
 
-            addLog(
-                s,
-                `${player.name} applies ${card.statusEffect.type}`,
-                "status",
-            );
-        }
+                addLog(
+                    s,
+                    `${player.name} applies ${card.statusEffect.type}`,
+                    "status",
+                );
+            }
 
             s.lastReveal!.push(reveal);
         } // for card
@@ -334,11 +341,7 @@ export function resolveFullTurn(s: GameState): GameState {
     if (action.kind === "attack" || action.kind === "attack_status") {
         for (const t of targets) {
             const dealt = applyDamage(t, action.damage ?? 0);
-            addLog(
-                s,
-                `Boss hits ${t.name} for ${dealt}`,
-                "boss",
-            );
+            addLog(s, `Boss hits ${t.name} for ${dealt}`, "boss");
         }
     }
 
@@ -349,11 +352,7 @@ export function resolveFullTurn(s: GameState): GameState {
         for (const t of targets) {
             applyStatus(t, action.status);
 
-            addLog(
-                s,
-                `Boss applies ${action.status.type}`,
-                "status",
-            );
+            addLog(s, `Boss applies ${action.status.type}`, "status");
         }
     }
 
@@ -379,7 +378,7 @@ export function resolveFullTurn(s: GameState): GameState {
         // Сбрасываем все сыгранные карты в дискард
         const played = p.selectedCardId as unknown as string[];
         for (const id of played) {
-            const idx = p.hand.findIndex(c => c.id === id);
+            const idx = p.hand.findIndex((c) => c.id === id);
             if (idx !== -1) {
                 p.discardPile.push(p.hand[idx]);
                 p.hand.splice(idx, 1);
@@ -398,10 +397,11 @@ export function resolveFullTurn(s: GameState): GameState {
     const newPhase = checkPhaseTransition(s.boss);
     if (newPhase) {
         s.boss.phase = newPhase.phase;
-        addLog(s, `${s.boss.name}: ${newPhase.label}!`, 'boss');
+        addLog(s, `${s.boss.name}: ${newPhase.label}!`, "boss");
     }
     s.boss.nextAction = pickNextBossAction(s.boss);
 
     s.phase = "action";
+    s.turnDeadline = Date.now() + 20_000; // ← добавить
     return s;
 }

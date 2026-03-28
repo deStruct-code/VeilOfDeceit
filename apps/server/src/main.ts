@@ -48,6 +48,30 @@ function broadcast(roomCode: RoomCode, data: unknown) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Bot: выбирает случайные карты в рамках энергии
+
+function submitBotAction(game: GameState): void {
+    const bot = game.players.find(p => p.id === "player-2");
+    if (!bot || bot.submitted) return;
+
+    const selected: string[] = [];
+    let energy = bot.energy;
+
+    // Перемешиваем руку случайно
+    const shuffled = [...bot.hand].sort(() => Math.random() - 0.5);
+
+    for (const card of shuffled) {
+        if (card.cost <= energy) {
+            selected.push(card.id);
+            energy -= card.cost;
+        }
+    }
+
+    bot.selectedCardId = selected as unknown as string[];
+    bot.submitted = true;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // CORS
 
 app.use((req, res, next) => {
@@ -117,6 +141,40 @@ app.get("/api/game/:id", async (req, res) => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
+// Solo game: создать игру с ботом
+
+app.post("/api/game/:id/solo", async (req, res) => {
+    const id = String(req.params.id || "")
+        .toUpperCase()
+        .replace(/[^A-Z0-9]/g, "")
+        .slice(0, 6);
+
+    if (!id || id.length !== 6) {
+        res.status(400).json({ error: "Invalid game id" });
+        return;
+    }
+
+    const playerName = String(req.body?.playerName || "").trim().slice(0, 24) || "Player";
+
+    try {
+        const existing = await gameRepository.findById(id);
+        if (existing) {
+            res.json(existing);
+            return;
+        }
+
+        const state = createInitialGameState(id, playerName, "Bot");
+        state.isSolo = true;
+
+        await gameRepository.save(state);
+        res.json(state);
+    } catch (err) {
+        console.error("[POST /api/game/solo]", err);
+        res.status(500).json({ error: "Database error" });
+    }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
 // ACTION
 
 app.post("/api/game/:id/action", async (req, res) => {
@@ -137,7 +195,6 @@ app.post("/api/game/:id/action", async (req, res) => {
             | "player-1"
             | "player-2";
 
-        // Принимаем массив cardIds от клиента
         const cardIds: string[] = Array.isArray(req.body?.cardIds)
             ? req.body.cardIds.map((id: unknown) => String(id).trim()).filter(Boolean)
             : [];
@@ -154,28 +211,32 @@ app.post("/api/game/:id/action", async (req, res) => {
             return;
         }
 
-        // Валидация: все cardIds должны быть в руке игрока
+        // Валидация карт
         const validCardIds = cardIds.filter(id => player.hand.some(c => c.id === id));
 
-        // Валидация: суммарная стоимость не превышает энергию
         const totalCost = validCardIds.reduce((sum, id) => {
             const card = player.hand.find(c => c.id === id);
             return sum + (card?.cost ?? 0);
         }, 0);
 
         if (totalCost > player.energy) {
-            res.status(400).json({ error: 'Not enough energy' });
+            res.status(400).json({ error: "Not enough energy" });
             return;
         }
 
-        player.selectedCardId = validCardIds;
+        player.selectedCardId = validCardIds as unknown as string[];
         player.submitted = true;
+
+        // ── Если соло — бот ходит сразу после игрока ──────────────────────────
+        if (game.isSolo) {
+            submitBotAction(game);
+        }
 
         let next: GameState;
 
         if (game.players.every((p) => p.submitted)) {
             next = resolveFullTurn(clone(game));
-
+            next.isSolo = game.isSolo; // сохраняем флаг после resolve
             await gameRepository.saveResult(next);
         } else {
             next = game;
@@ -205,7 +266,14 @@ app.post("/api/game/:id/reset", async (req, res) => {
     }
 
     try {
-        const next = createInitialGameState(id);
+        // Сохраняем isSolo при рестарте
+        const existing = await gameRepository.findById(id);
+        const isSolo = existing?.isSolo ?? false;
+
+        const playerName = existing?.players[0]?.name ?? "Player";
+        const next = createInitialGameState(id, playerName, isSolo ? "Bot" : (existing?.players[1]?.name ?? "Player 2"));
+        next.isSolo = isSolo;
+
         await gameRepository.save(next);
         res.json(next);
     } catch (err) {
@@ -374,6 +442,39 @@ wss.on("connection", (ws) => {
         }
     });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Background timer loop — форсирует skip по turnDeadline
+
+setInterval(async () => {
+    try {
+        const { rows } = await db.query<{ id: string; state: GameState }>(
+            `SELECT id, state FROM games
+             WHERE (state->>'phase') = 'action'
+               AND (state->>'turnDeadline') IS NOT NULL
+               AND (state->>'turnDeadline')::bigint < $1`,
+            [Date.now()]
+        );
+
+        for (const row of rows) {
+            const game = row.state;
+
+            for (const player of game.players) {
+                if (!player.submitted) {
+                    // Бот или живой игрок — одинаково: skip
+                    player.selectedCardId = [] as unknown as string[];
+                    player.submitted = true;
+                }
+            }
+
+            const next = resolveFullTurn(clone(game));
+            next.isSolo = game.isSolo;
+            await gameRepository.save(next);
+        }
+    } catch (err) {
+        console.error("[timer loop]", err);
+    }
+}, 1000);
 
 // ─────────────────────────────────────────────────────────────────────────────
 

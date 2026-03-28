@@ -29,7 +29,20 @@ export const gameApi = createApi({
       query: ({ gameId }) => ({ url: `/game/${gameId}/reset`, method: 'POST' }),
       invalidatesTags: ['Game'],
     }),
+    createSoloGame: builder.mutation<GameState, { gameId: string; playerName: string }>({
+      query: ({ gameId, playerName }) => ({
+        url: `/game/${gameId}/solo`,
+        method: 'POST',
+        body: { playerName },
+      }),
+      invalidatesTags: ['Game'],
+    }),
   }),
 })
 
-export const { useGetGameQuery, useSubmitActionMutation, useResetGameMutation } = gameApi
+export const {
+  useGetGameQuery,
+  useSubmitActionMutation,
+  useResetGameMutation,
+  useCreateSoloGameMutation,
+} = gameApi

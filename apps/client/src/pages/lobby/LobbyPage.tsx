@@ -2,6 +2,8 @@ import { useMemo, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { generateRoomCode, normalizeRoomCode } from '../../shared/lib/roomCode'
 import { getPlayerName, savePlayerName, getOrGeneratePlayerName } from '../../shared/lib/playerName'
+import { setRoomPlayerSlot } from '../../shared/lib/playerSlot'
+import { useCreateSoloGameMutation } from '../../shared/api/gameApi'
 import styles from './LobbyPage.module.css'
 
 export function LobbyPage() {
@@ -10,17 +12,17 @@ export function LobbyPage() {
   const [nickname, setNickname] = useState('')
   const [nicknameSaved, setNicknameSaved] = useState(false)
 
+  const [createSoloGame, { isLoading: isSoloLoading }] = useCreateSoloGameMutation()
+
   const normalizedJoinCode = useMemo(() => normalizeRoomCode(joinCode).slice(0, 6), [joinCode])
   const canJoin = normalizedJoinCode.length === 6
 
-  // Подгружаем сохранённый никнейм при монтировании
   useEffect(() => {
     const saved = getPlayerName()
     if (saved) {
       setNickname(saved)
       setNicknameSaved(true)
     } else {
-      // Генерируем дефолтный, но не сохраняем — пусть игрок видит его и решит
       const generated = getOrGeneratePlayerName()
       setNickname(generated)
       setNicknameSaved(false)
@@ -37,10 +39,26 @@ export function LobbyPage() {
   }
 
   function handleEnterRoom(code: string) {
-    // Сохраняем никнейм перед входом если не сохранён
     const trimmed = nickname.trim().slice(0, 24)
     if (trimmed) savePlayerName(trimmed)
     navigate(`/room/${code}`)
+  }
+
+  async function handleSoloGame() {
+    const trimmed = nickname.trim().slice(0, 24)
+    if (trimmed) savePlayerName(trimmed)
+
+    const gameId = generateRoomCode(6)
+    const playerName = trimmed || getOrGeneratePlayerName()
+
+    try {
+      await createSoloGame({ gameId, playerName }).unwrap()
+      // В соло мы всегда player-1
+      setRoomPlayerSlot(gameId, 'player-1')
+      navigate(`/game/${gameId}`)
+    } catch (err) {
+      console.error('[solo]', err)
+    }
   }
 
   return (
@@ -74,13 +92,24 @@ export function LobbyPage() {
             </div>
           </div>
 
-          {/* Создать игру */}
+          {/* Одиночная игра */}
           <div className={styles.actions}>
             <button
               className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={handleSoloGame}
+              disabled={isSoloLoading}
+            >
+              {isSoloLoading ? 'Загрузка...' : 'Одиночная игра'}
+            </button>
+          </div>
+
+          {/* Создать игру (кооп) */}
+          <div className={styles.actions}>
+            <button
+              className={styles.btn}
               onClick={() => handleEnterRoom(generateRoomCode(6))}
             >
-              Создать игру
+              Создать игру (кооп)
             </button>
           </div>
 
