@@ -21,9 +21,9 @@ ARENA | ARENA | ARENA
 Nickname HP | ALly`s nickname HP
 Energy      | Ally`s enegry
 Hands       | Ally`s hands
-[] Fix bug. If Player has a 2cost cards on a first turn, he can`t do nothing. Make a button option 'Skip' in every turn.
-[] Create a timer. 20 sec for a turn. If player choose nothing so 'Skip' button is playing.
-[] Fix bug: When hp of player is 0 he still can play. Need to just 
+[x] Fix bug. If Player has a 2cost cards on a first turn, he can`t do nothing. Make a button option 'Skip' in every turn.
+[x] Create a timer. 20 sec for a turn. If player choose nothing so 'Skip' button is playing.
+[x] Fix bug: When hp of player is 0 he still can play.
 [] Create a bot, who can play a random cards from his hand. Make a button in loby "Одиночная игра". 
 [] Make a google-auth, so player can log into account and save his "progress". "Progress" now is anavailable.
 [] Cut-scene, when the game is started it must be a 10second untill cards are given and information about hp and energy are shown. 
