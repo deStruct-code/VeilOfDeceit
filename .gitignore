@@ -14,7 +14,6 @@ build/
 
 # окружение
 .env
-.env.ts
 .env.local
 .env.*
 
