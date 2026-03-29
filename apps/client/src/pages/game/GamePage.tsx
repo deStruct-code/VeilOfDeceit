@@ -164,34 +164,33 @@ function PlayerBar({player, isLocal}: {player: Player; isLocal: boolean}) {
 
 // ─── Energy row ───────────────────────────────────────────────────────────────
 
-function EnergyCell({player}: {player: Player}) {
-    const pips = Array.from(
-        {length: player.maxEnergy},
-        (_, i) => i < player.energy,
-    );
-    const visible = pips.slice(0, 10);
+// function EnergyCell({player}: {player: Player}) {
+//     const pips = Array.from(
+//         {length: player.maxEnergy},
+//         (_, i) => i < player.energy,
+//     );
+//     const visible = pips.slice(0, 10);
 
-    return (
-        <div className={styles.energyCell}>
-            {visible.map((active, i) => (
-                <span
-                    key={i}
-                    className={`${styles.pip} ${active ? styles.pipActive : ""}`}
-                />
-            ))}
-            <span
-                style={{
-                    fontSize: "1rem",
-                    color: "var(--text-dim)",
-                    fontFamily: "var(--font-mono)",
-                    marginLeft: "0.25rem",
-                }}
-            >
-                {player.energy} Энергия: ⚡
-            </span>
-        </div>
-    );
-}
+//     return (
+//         <div className={styles.energyCell}>
+//             {visible.map((active, i) => (
+//                 <span
+//                     key={i}
+//                     className={`${styles.pip} ${active ? styles.pipActive : ""}`}
+//                 />
+//             ))}
+//             <span
+//                 style={{
+//                     fontSize: "1rem",
+//                     color: "var(--text-dim)",
+//                     fontFamily: "var(--font-mono)",
+//                     marginLeft: "0.25rem",
+//                 }}
+//             >
+//             </span>
+//         </div>
+//     );
+// }
 
 // ─── Deck widget ──────────────────────────────────────────────────────────────
 
@@ -403,14 +402,8 @@ export function GamePage() {
                 <PlayerBar player={allyPlayer} isLocal={false} />
             </div>
 
-            {/* ── Row 6: Energy ── */}
 
-            <div className={styles.energyRow}>
-                <EnergyCell player={localPlayer} />
-                <EnergyCell player={allyPlayer} />
-            </div>
-
-            {/* ── Row 7: Hands ── */}
+            {/* ── Row 6: Hands ── */}
 
             <div className={styles.handsRow}>
                 <div className={styles.handCell}>

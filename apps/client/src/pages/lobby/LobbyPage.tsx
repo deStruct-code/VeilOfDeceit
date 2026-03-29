@@ -89,8 +89,7 @@ export function LobbyPage() {
             <div className={styles.card}>
                 <h1 className={styles.title}>Veil of Deceit</h1>
                 <p className={styles.subtitle}>
-                    Кооператив на двоих. Создай комнату или присоединись по
-                    коду.
+                    Карточная игра на двоих. Не доверяй никому.
                 </p>
 
                 <div className={styles.grid}>
@@ -197,6 +196,16 @@ export function LobbyPage() {
                             onClick={() => handleEnterRoom(generateRoomCode(6))}
                         >
                             Игра на двоих (рекомендуется)
+                        </button>
+                    </div>
+
+                    <div className={styles.actions}>
+                        <button
+                            className={`${styles.btn} ${styles.btnPrimary}`}
+                            onClick={() => null}
+                            disabled={true}
+                        >
+                            Быстрая игра (В разработке)
                         </button>
                     </div>
 

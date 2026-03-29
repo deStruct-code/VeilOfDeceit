@@ -1,26 +1,26 @@
-import type { Card, Player, StatusEffect } from "@veil/shared";
-import styles from "./PlayerHand.module.css";
+import type { Card, Player, StatusEffect } from '@veil/shared'
+import styles from './PlayerHand.module.css'
 
 interface Props {
-    player: Player;
-    isLocal: boolean;
-    selectedCardIds: string[];
-    onSelect: (cardId: string) => void;
+    player: Player
+    isLocal: boolean
+    selectedCardIds: string[]
+    onSelect: (cardId: string) => void
 }
 
 const typeColors: Record<string, string> = {
-    attack: "var(--color-attack)",
-    defense: "var(--color-defense)",
-    support: "var(--color-support)",
-    special: "var(--color-special)",
-    hidden: "var(--color-hidden)",
-};
+    attack:  'var(--color-attack)',
+    defense: 'var(--color-defense)',
+    support: 'var(--color-support)',
+    special: 'var(--color-special)',
+    hidden:  'var(--color-hidden)',
+}
 
 const statusColors: Record<string, string> = {
-    poison: "#4ade80",
-    weakness: "#a855f7",
-    shield: "#60a5fa",
-};
+    poison:   '#4ade80',
+    weakness: '#a855f7',
+    shield:   '#60a5fa',
+}
 
 function CardItem({
     card,
@@ -28,20 +28,17 @@ function CardItem({
     onSelect,
     disabled,
 }: {
-    card: Card;
-    selected: boolean;
-    onSelect: () => void;
-    disabled: boolean;
+    card: Card
+    selected: boolean
+    onSelect: () => void
+    disabled: boolean
 }) {
     return (
         <button
-            className={`${styles.card} ${selected ? styles.selected : ""} ${disabled ? styles.disabled : ""}`}
-            onClick={() => {
-                if (disabled) return;
-                onSelect();
-            }}
+            className={`${styles.card} ${selected ? styles.selected : ''} ${disabled ? styles.disabled : ''}`}
+            onClick={() => { if (!disabled) onSelect() }}
             disabled={disabled}
-            style={{ "--accent": typeColors[card.type] } as React.CSSProperties}
+            style={{ '--accent': typeColors[card.type] } as React.CSSProperties}
         >
             <div className={styles.cardTop}>
                 <span className={styles.cardType}>{card.type}</span>
@@ -59,7 +56,7 @@ function CardItem({
                 )}
             </div>
         </button>
-    );
+    )
 }
 
 function CardBack() {
@@ -69,78 +66,46 @@ function CardBack() {
                 <span className={styles.cardBackGlyph}>⚔</span>
             </div>
         </div>
-    );
+    )
 }
 
-export function PlayerHand({
-    player,
-    isLocal,
-    selectedCardIds,
-    onSelect,
-}: Props) {
-    const hpPct = (player.hp / player.maxHp) * 100;
-    const hpColor =
-        hpPct > 50 ? "var(--color-hp)" : hpPct > 25 ? "#f59e0b" : "#ef4444";
+export function PlayerHand({ player, isLocal, selectedCardIds, onSelect }: Props) {
+    const hpPct = (player.hp / player.maxHp) * 100
+    const hpColor = hpPct > 50 ? 'var(--color-hp)' : hpPct > 25 ? '#f59e0b' : '#ef4444'
 
     const energyPips = Array.from(
-        { length: player.maxEnergy },
+        { length: Math.min(player.maxEnergy, 10) },
         (_, i) => i < player.energy
-    );
+    )
 
-    const selectedCards = player.hand.filter((c) =>
-        selectedCardIds.includes(c.id)
-    );
-
-    const usedEnergy = selectedCards.reduce(
-        (sum, c) => sum + c.cost,
-        0
-    );
+    const selectedCards = player.hand.filter(c => selectedCardIds.includes(c.id))
+    const usedEnergy = selectedCards.reduce((sum, c) => sum + c.cost, 0)
 
     return (
-        <div
-            className={`${styles.container} ${isLocal ? styles.local : styles.ally}`}
-        >
+        <div className={`${styles.container} ${isLocal ? styles.local : styles.ally}`}>
+
+            {/* ── Панель: имя | HP | энергия ── */}
             <div className={styles.playerInfo}>
-                <span className={styles.playerName}>{player.name}</span>
+                <span className={styles.playerName}>
+                    {player.name}
+                    {!player.isAlive && (
+                        <span style={{ color: '#ef4444', marginLeft: '0.4rem', fontSize: '0.6rem' }}>☠</span>
+                    )}
+                </span>
 
                 <div className={styles.hpGroup}>
                     <div className={styles.hpBar}>
-                        <div
-                            className={styles.hpFill}
-                            style={{
-                                width: `${hpPct}%`,
-                                background: hpColor,
-                            }}
-                        />
+                        <div className={styles.hpFill} style={{ width: `${hpPct}%`, background: hpColor }} />
                     </div>
-                    <span className={styles.hpText}>
-                        {player.hp}/{player.maxHp}
-                    </span>
-                </div>
-
-                <div className={styles.energy}>
-                    {energyPips.map((active, i) => (
-                        <span
-                            key={i}
-                            className={`${styles.pip} ${
-                                active ? styles.pipActive : ""
-                            }`}
-                        />
-                    ))}
+                    <span className={styles.hpText}>{player.hp}/{player.maxHp}</span>
                 </div>
 
                 {player.shield > 0 && (
-                    <span className={styles.shieldBadge}>
-                        🛡 {player.shield}
-                    </span>
+                    <span className={styles.shieldBadge}>🛡 {player.shield}</span>
                 )}
 
                 {player.statuses.map((s: StatusEffect) => (
-                    <span
-                        key={s.type}
-                        className={styles.statusBadge}
-                        style={{ color: statusColors[s.type] }}
-                    >
+                    <span key={s.type} className={styles.statusBadge} style={{ color: statusColors[s.type] }}>
                         {s.type} ×{s.stacks}
                     </span>
                 ))}
@@ -148,29 +113,41 @@ export function PlayerHand({
                 {player.submitted && (
                     <span className={styles.submitted}>✓ ready</span>
                 )}
+
+                {/* Энергия — всегда справа */}
+                <div className={styles.energy}>
+                    {isLocal && (
+                        <span className={styles.energyLabel}>⚡</span>
+                    )}
+                    {energyPips.map((active, i) => (
+                        <span key={i} className={`${styles.pip} ${active ? styles.pipActive : ''}`} />
+                    ))}
+                </div>
             </div>
 
+            {/* ── Рука ── */}
             <div className={styles.hand}>
                 {isLocal
-                    ? player.hand.map((card) => {
-                          const isDisabled =
-                              player.submitted ||
-                              card.type === "hidden" ||
-                              (!selectedCardIds.includes(card.id) &&
-                                  usedEnergy + card.cost > player.energy)
+                    ? player.hand.map(card => {
+                        const isDisabled =
+                            player.submitted ||
+                            !player.isAlive ||
+                            card.type === 'hidden' ||
+                            (!selectedCardIds.includes(card.id) && usedEnergy + card.cost > player.energy)
 
-                          return (
-                              <CardItem
-                                  key={card.id}
-                                  card={card}
-                                  selected={selectedCardIds.includes(card.id)}
-                                  onSelect={() => onSelect(card.id)}
-                                  disabled={isDisabled}
-                              />
-                          )
-                      })
-                    : player.hand.map((_, i) => <CardBack key={i} />)}
+                        return (
+                            <CardItem
+                                key={card.id}
+                                card={card}
+                                selected={selectedCardIds.includes(card.id)}
+                                onSelect={() => onSelect(card.id)}
+                                disabled={isDisabled}
+                            />
+                        )
+                    })
+                    : player.hand.map((_, i) => <CardBack key={i} />)
+                }
             </div>
         </div>
-    );
+    )
 }

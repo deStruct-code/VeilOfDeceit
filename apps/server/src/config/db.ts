@@ -1,16 +1,16 @@
-import { Pool } from 'pg';
-import { env } from './env';
+import {Pool} from "pg";
+import {env} from "./env";
 
 export const db = new Pool({
-  connectionString: env.DATABASE_URL,
-  ssl: env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-  max: 10,
-  idleTimeoutMillis: 30_000,
-  connectionTimeoutMillis: 5_000,
+    connectionString: env.DATABASE_URL,
+    ssl: env.NODE_ENV === "production" ? {rejectUnauthorized: false} : false,
+    max: 10,
+    idleTimeoutMillis: 30_000,
+    connectionTimeoutMillis: 5_000,
 });
 
-db.on('error', (err) => {
-  console.error('[pg] Unexpected pool error:', err.message);
+db.on("error", (err) => {
+    console.error("[pg] Unexpected pool error:", err.message);
 });
 
 const SCHEMA_SQL = `
@@ -52,6 +52,7 @@ CREATE INDEX IF NOT EXISTS sessions_user_idx ON sessions (user_id);
 `;
 
 export async function runMigration() {
-  await db.query(SCHEMA_SQL);
-  console.log('[db] Migration applied');
+    console.log("Current Directory:", process.cwd());
+    await db.query(SCHEMA_SQL);
+    console.log("[db] Migration applied");
 }
