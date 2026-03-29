@@ -40,9 +40,5 @@ out/
 # архивы
 .zip
 
-<<<<<<< HEAD
 # ok
-=======
-# 
-/auth
->>>>>>> origin/main
+.ini

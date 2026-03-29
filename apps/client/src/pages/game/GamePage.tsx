@@ -58,10 +58,6 @@ function BossCell({
                     {phase.replace("_", " ")}
                 </span>
 
-                {/*  Для чего эта кнопка? */}
-                {/* <button className={styles.resetBtn} onClick={onReset}>
-                    ↺
-                </button> */}
             </div>
 
             <div className={styles.bossName} style={{color: phaseColor}}>
@@ -161,37 +157,71 @@ function PlayerBar({player, isLocal}: {player: Player; isLocal: boolean}) {
         </div>
     );
 }
-
-// ─── Energy row ───────────────────────────────────────────────────────────────
-
-function EnergyCell({player}: {player: Player}) {
-    const pips = Array.from(
-        {length: player.maxEnergy},
-        (_, i) => i < player.energy,
-    );
-    const visible = pips.slice(0, 10);
-
+// ─── Ally compact panel ───────────────────────────────────────────────────────
+ 
+function AllyCompact({player}: {player: Player}) {
+    const hpPct = (player.hp / player.maxHp) * 100;
+    const hpColor =
+        hpPct > 50 ? "var(--color-hp)" : hpPct > 25 ? "#f59e0b" : "#ef4444";
+ 
     return (
-        <div className={styles.energyCell}>
-            {visible.map((active, i) => (
-                <span
-                    key={i}
-                    className={`${styles.pip} ${active ? styles.pipActive : ""}`}
-                />
-            ))}
-            <span
-                style={{
-                    fontSize: "1rem",
-                    color: "var(--text-dim)",
-                    fontFamily: "var(--font-mono)",
-                    marginLeft: "0.25rem",
-                }}
-            >
-                {player.energy} Энергия: ⚡
-            </span>
+        <div className={styles.allyCompact}>
+            <div className={styles.allyLeft}>
+                <span className={styles.playerName}>
+                    {player.name}
+                    {!player.isAlive && (
+                        <span style={{color: "#ef4444", marginLeft: "0.4rem", fontSize: "0.65rem"}}>
+                            ☠ defeated
+                        </span>
+                    )}
+                </span>
+                <div className={styles.hpGroup}>
+                    <div className={styles.hpBar}>
+                        <div className={styles.hpFill} style={{width: `${hpPct}%`, background: hpColor}} />
+                    </div>
+                    <span className={styles.hpText}>{player.hp}/{player.maxHp}</span>
+                </div>
+            </div>
+            <div className={styles.allyCards}>
+                {player.hand.map((_, i) => (
+                    <div key={i} className={styles.allyCardBack}>
+                        <span className={styles.allyCardGlyph}>⚔</span>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
+
+// ─── Energy row ───────────────────────────────────────────────────────────────
+
+// function EnergyCell({player}: {player: Player}) {
+//     const pips = Array.from(
+//         {length: player.maxEnergy},
+//         (_, i) => i < player.energy,
+//     );
+//     const visible = pips.slice(0, 10);
+
+//     return (
+//         <div className={styles.energyCell}>
+//             {visible.map((active, i) => (
+//                 <span
+//                     key={i}
+//                     className={`${styles.pip} ${active ? styles.pipActive : ""}`}
+//                 />
+//             ))}
+//             <span
+//                 style={{
+//                     fontSize: "1rem",
+//                     color: "var(--text-dim)",
+//                     fontFamily: "var(--font-mono)",
+//                     marginLeft: "0.25rem",
+//                 }}
+//             >
+//             </span>
+//         </div>
+//     );
+// }
 
 // ─── Deck widget ──────────────────────────────────────────────────────────────
 
@@ -334,7 +364,7 @@ export function GamePage() {
         );
     if (isError || !game)
         return (
-            <div className={styles.loading}>Failed to reach the server.</div>
+            <div className={styles.loading}>Ошибка подключения к серверу.</div>
         );
 
     const localPlayer = game.players.find((p) => p.id === localPlayerId)!;
@@ -400,17 +430,11 @@ export function GamePage() {
 
             <div className={styles.playerBars}>
                 <PlayerBar player={localPlayer} isLocal={true} />
-                <PlayerBar player={allyPlayer} isLocal={false} />
+                <AllyCompact player={allyPlayer} />
             </div>
 
-            {/* ── Row 6: Energy ── */}
 
-            <div className={styles.energyRow}>
-                <EnergyCell player={localPlayer} />
-                <EnergyCell player={allyPlayer} />
-            </div>
-
-            {/* ── Row 7: Hands ── */}
+            {/* ── Row 6: Hands ── */}
 
             <div className={styles.handsRow}>
                 <div className={styles.handCell}>

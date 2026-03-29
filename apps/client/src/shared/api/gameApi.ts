@@ -37,6 +37,9 @@ export const gameApi = createApi({
       }),
       invalidatesTags: ['Game'],
     }),
+    createRoom: builder.mutation<{ code: string }, void>({
+      query: () => ({ url: '/rooms', method: 'POST' }),
+    }),
   }),
 })
 
@@ -45,4 +48,5 @@ export const {
   useSubmitActionMutation,
   useResetGameMutation,
   useCreateSoloGameMutation,
+  useCreateRoomMutation,
 } = gameApi

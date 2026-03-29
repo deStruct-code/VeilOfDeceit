@@ -189,7 +189,7 @@
   grid-column: 1 / 4;
   grid-row: 7;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   border-top: 1px solid var(--border);
   min-height: 0;
   background: rgba(12, 13, 16, 0.82);
@@ -205,6 +205,48 @@
 
 .handCell + .handCell {
   border-left: 1px solid var(--border);
+}
+
+/* ── Ally compact panel ──────────────────────────────────────────── */
+
+.allyCompact {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.45rem 1rem;
+  border-left: 1px solid var(--border);
+}
+
+.allyLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 120px;
+}
+
+.allyCards {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.allyCardBack {
+  width: 22px;
+  height: 32px;
+  border-radius: 3px;
+  background: linear-gradient(160deg, rgba(14, 8, 24, 0.7) 0%, rgba(8, 5, 16, 0.8) 100%);
+  border: 1px solid rgba(120, 70, 180, 0.2);
+  border-top: 2px solid rgba(120, 70, 180, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.allyCardGlyph {
+  font-size: 0.55rem;
+  opacity: 0.15;
+  user-select: none;
 }
 
 /* ── Shared components ───────────────────────────────────────────── */
