@@ -9,7 +9,9 @@ import {
 import {setRoomPlayerSlot} from "../../shared/lib/playerSlot";
 import {useCreateSoloGameMutation, useCreateRoomMutation} from "../../shared/api/gameApi";
 import {useMe} from "../../shared/lib/useMe";
+import {CardBackShowcase} from "../../features/select-card-back";
 import styles from "./LobbyPage.module.css";
+import { getSelectedCardBack } from "@/entities/card/cardBack";
 
 const API_URL =
     (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "") ||
@@ -57,6 +59,7 @@ export function LobbyPage() {
     const [searchParams] = useSearchParams();
     const {me, isLoading: isMeLoading, logout} = useMe();
 
+    const [view, setView] = useState<'menu' | 'cards'>('menu');
     const [joinCode, setJoinCode] = useState("");
     const [nickname, setNickname] = useState("");
     const [nicknameSaved, setNicknameSaved] = useState(false);
@@ -131,6 +134,15 @@ export function LobbyPage() {
 
     const isBusy = isSoloLoading || isCreatingRoom;
 
+    if (view === 'cards') {
+        return (
+            <CardBackShowcase
+                initialSelected={getSelectedCardBack()}
+                onBack={() => setView('menu')}
+            />
+        );
+    }
+
     return (
         <div className={styles.page}>
             {/* Atmospheric background */}
@@ -149,12 +161,12 @@ export function LobbyPage() {
                 {/* Title */}
                 <div className={styles.titleBlock}>
                     <div className={styles.titleRow}>
-                        <RuneSymbol style={{color: "rgba(180,130,60,0.6)"}}/>
+                        <RuneSymbol />
                         <div className={styles.titleTexts}>
                             <span className={styles.titleEyebrow}>The chronicles of</span>
                             <h1 className={styles.title}>VEIL OF DECEIT</h1>
                         </div>
-                        <RuneSymbol style={{color: "rgba(180,130,60,0.6)"}}/>
+                        <RuneSymbol/>
                     </div>
                     <p className={styles.subtitle}>Карточная игра на двоих. Не доверяй никому.</p>
                 </div>
@@ -260,7 +272,7 @@ export function LobbyPage() {
                 </div>
 
                 {/* Card backs link — не трогаем */}
-                <button className={styles.cardBacksLink}>✦ Рубашки колоды ✦</button>
+                <button className={styles.cardBacksLink} onClick={() => setView('cards')}>✦ Рубашки колоды ✦</button>
             </div>
         </div>
     );

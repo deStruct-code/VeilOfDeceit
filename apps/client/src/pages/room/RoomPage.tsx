@@ -201,7 +201,7 @@ export function RoomPage() {
               className={`${styles.btnShare} ${copied ? styles.btnShareCopied : ''}`}
               onClick={handleShare}
             >
-              {copied ? 'Скопировано' : 'Отправить код'}
+              {copied ? 'Скопировано' : 'Пригласить'}
             </button>
           )}
           {state === 'ready' && (

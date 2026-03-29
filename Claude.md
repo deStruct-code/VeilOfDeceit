@@ -3,6 +3,8 @@
 >DO NOT DELETE OR RENAME THIS FILE
 >Отвечай на русском
 >Always use colors from theme
+>Always use FSD-stucture to creating files/pholders
+>SOLID, DRY, KISS code style
 
 -----TODO-----
 [x] Create a folders using a chapter INFRASTRUCTURE
@@ -31,7 +33,8 @@ Size of a bg wil be 1024x1024.
 [x] Make a google-auth, so player can log into account and save his "progress". "Progress" now is anavailable.
 [x] Create a npm run dev:server script, which will be a pull a variables from infra/env/dev.env because now he only use a second arg of || construction in env.ts SEVERENITY: HIGH. 
 [x] Make a 6digits code generation from server. Now everyone can type any code and share it with friend. It is not what I want to. SEVERENITY: HIGH
-[] Make a "Share" button while waiting a second player. Link will be a full from search line. May I use shorten link? 
+[x] Make a "Share" button while waiting a second player. Link will be a full from search line.
+[] Make a 
 
 -----INFO-----
 
