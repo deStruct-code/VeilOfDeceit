@@ -15,7 +15,8 @@ build/
 # окружение
 .env
 .env.local
-.env.*.local
+.env.*
+
 
 # логи
 npm-debug.log*
@@ -35,3 +36,9 @@ Thumbs.db
 .cache/
 .next/
 out/
+
+
+# архивы
+.zip
+
+# ok
