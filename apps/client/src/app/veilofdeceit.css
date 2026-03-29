@@ -1,0 +1,156 @@
+/* veilofdeceit Dark Fantasy Theme Utilities */
+
+/* Background variations */
+.veilofdeceit-bg {
+  background: var(--veilofdeceit-bg-deep);
+}
+
+.veilofdeceit-bg-card {
+  background: linear-gradient(180deg, var(--veilofdeceit-bg-card-from) 0%, var(--veilofdeceit-bg-card-to) 100%);
+}
+
+.veilofdeceit-bg-input {
+  background: var(--veilofdeceit-bg-input);
+}
+
+/* Text colors */
+.veilofdeceit-text-gold {
+  color: var(--veilofdeceit-gold-primary);
+}
+
+.veilofdeceit-text-gold-muted {
+  color: var(--veilofdeceit-gold-text);
+}
+
+.veilofdeceit-text-purple {
+  color: var(--veilofdeceit-purple-primary);
+}
+
+.veilofdeceit-text-purple-muted {
+  color: var(--veilofdeceit-purple-muted);
+}
+
+/* Border colors */
+.veilofdeceit-border-gold {
+  border-color: var(--veilofdeceit-gold-border);
+}
+
+.veilofdeceit-border-purple {
+  border-color: var(--veilofdeceit-purple-border);
+}
+
+/* Card with fantasy styling */
+.veilofdeceit-card {
+  background: linear-gradient(180deg, var(--veilofdeceit-bg-card-from) 0%, var(--veilofdeceit-bg-card-to) 100%);
+  border: 1px solid var(--veilofdeceit-gold-border);
+  box-shadow: var(--veilofdeceit-shadow-card);
+  border-radius: 4px;
+}
+
+/* Button base styles */
+.veilofdeceit-btn-solo {
+  background: var(--veilofdeceit-btn-solo-bg);
+  color: var(--veilofdeceit-btn-solo-text);
+  border: 1px solid rgba(180, 130, 60, 0.35);
+  transition: all 0.2s ease;
+}
+
+.veilofdeceit-btn-solo:hover {
+  background: var(--veilofdeceit-btn-solo-hover);
+  color: var(--veilofdeceit-btn-solo-text-hover);
+  border-color: var(--veilofdeceit-gold-hover);
+}
+
+.veilofdeceit-btn-duo {
+  background: var(--veilofdeceit-btn-duo-bg);
+  color: var(--veilofdeceit-btn-duo-text);
+  border: 1px solid var(--veilofdeceit-purple-border);
+  transition: all 0.2s ease;
+}
+
+.veilofdeceit-btn-duo:hover {
+  background: var(--veilofdeceit-btn-duo-hover);
+  color: var(--veilofdeceit-btn-duo-text-hover);
+  border-color: var(--veilofdeceit-purple-hover);
+}
+
+/* Input field styling */
+.veilofdeceit-input {
+  background: var(--veilofdeceit-bg-input);
+  border: 1px solid rgba(180, 130, 60, 0.2);
+  border-radius: 3px;
+  color: var(--veilofdeceit-gold-text);
+  font-family: 'Cinzel', serif;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.veilofdeceit-input:focus {
+  border-color: rgba(180, 130, 60, 0.55);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 16px rgba(180, 130, 60, 0.08);
+}
+
+.veilofdeceit-input-purple {
+  background: var(--veilofdeceit-bg-input);
+  border: 1px solid var(--veilofdeceit-purple-border);
+  border-radius: 3px;
+  color: var(--veilofdeceit-purple-text);
+  font-family: 'Cinzel', serif;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.veilofdeceit-input-purple:focus {
+  border-color: rgba(140, 90, 200, 0.5);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 14px rgba(120, 60, 200, 0.08);
+}
+
+/* Typography classes */
+.veilofdeceit-font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.veilofdeceit-font-cinzel-decorative {
+  font-family: 'Cinzel Decorative', serif;
+}
+
+.veilofdeceit-font-fell {
+  font-family: 'IM Fell English', serif;
+}
+
+/* Label styling */
+.veilofdeceit-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--veilofdeceit-gold-muted);
+  text-transform: uppercase;
+}
+
+.veilofdeceit-label-purple {
+  font-size: 0.6rem;
+  letter-spacing: 0.25em;
+  color: var(--veilofdeceit-purple-label);
+  text-transform: uppercase;
+}
+
+/* Atmospheric overlays */
+.veilofdeceit-vignette {
+  background: radial-gradient(ellipse 70% 70% at 50% 40%, rgba(60, 20, 90, 0.18) 0%, rgba(9, 9, 16, 0.0) 60%, rgba(5, 3, 12, 0.85) 100%);
+}
+
+.veilofdeceit-glow-top {
+  background: radial-gradient(ellipse, var(--veilofdeceit-glow-top) 0%, transparent 70%);
+}
+
+.veilofdeceit-glow-bottom {
+  background: radial-gradient(ellipse, var(--veilofdeceit-glow-bottom) 0%, transparent 70%);
+}
+
+/* Noise texture overlay */
+.veilofdeceit-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.05;
+}

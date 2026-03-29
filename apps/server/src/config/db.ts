@@ -13,7 +13,6 @@ db.on('error', (err) => {
   console.error('[pg] Unexpected pool error:', err.message);
 });
 
-// SQL встроен напрямую — tsc не копирует .sql файлы в dist
 const SCHEMA_SQL = `
 CREATE TABLE IF NOT EXISTS games (
   id          CHAR(6)     PRIMARY KEY,
@@ -32,6 +31,24 @@ CREATE TABLE IF NOT EXISTS game_results (
   turns       INT,
   ended_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS users (
+  id          SERIAL      PRIMARY KEY,
+  google_id   TEXT        NOT NULL UNIQUE,
+  email       TEXT        NOT NULL,
+  name        TEXT        NOT NULL,
+  avatar      TEXT,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+  token       TEXT        PRIMARY KEY,
+  user_id     INT         NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  expires_at  TIMESTAMPTZ NOT NULL DEFAULT now() + INTERVAL '30 days'
+);
+
+CREATE INDEX IF NOT EXISTS sessions_user_idx ON sessions (user_id);
 `;
 
 export async function runMigration() {

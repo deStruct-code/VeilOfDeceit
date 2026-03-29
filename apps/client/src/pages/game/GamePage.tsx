@@ -57,9 +57,11 @@ function BossCell({
                 <span className={`${styles.phase} ${styles[phase]}`}>
                     {phase.replace("_", " ")}
                 </span>
-                <button className={styles.resetBtn} onClick={onReset}>
+
+                {/*  Для чего эта кнопка? */}
+                {/* <button className={styles.resetBtn} onClick={onReset}>
                     ↺
-                </button>
+                </button> */}
             </div>
 
             <div className={styles.bossName} style={{color: phaseColor}}>
