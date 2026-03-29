@@ -17,7 +17,6 @@ build/
 .env.ts
 .env.local
 .env.*
-apps/server/src/config/env.ts
 
 # логи
 npm-debug.log*
