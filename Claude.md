@@ -2,6 +2,7 @@
 >This file is read by Claude Code at the start of every session
 >DO NOT DELETE OR RENAME THIS FILE
 >Отвечай на русском
+>Always use colors from theme
 
 -----TODO-----
 [x] Create a folders using a chapter INFRASTRUCTURE
@@ -24,7 +25,9 @@ Hands       | Ally`s hands
 [x] Fix bug. If Player has a 2cost cards on a first turn, he can`t do nothing. Make a button option 'Skip' in every turn.
 [x] Create a timer. 20 sec for a turn. If player choose nothing so 'Skip' button is playing.
 [x] Fix bug: When hp of player is 0 he still can play.
-[] Create a bot, who can play a random cards from his hand. Make a button in loby "Одиночная игра". 
+[x] Create a bot, who can play a random cards from his hand. Make a button in loby "Одиночная игра". 
+[x] Fix a styles: The asset of background should be on a whole screen. So all cards and Boss picture will be to z-index ABOVE the background. Now background is cropped in the midddle of arena and there are a lot of information about everything. 
+Size of a bg wil be 1024x1024. 
 [] Make a google-auth, so player can log into account and save his "progress". "Progress" now is anavailable.
 [] Cut-scene, when the game is started it must be a 10second untill cards are given and information about hp and energy are shown. 
 -----INFO-----
@@ -287,3 +290,128 @@ infra/
 🔄 Связь слоёв
 React → API → Controller → Service → Game Engine → DB
 
+---STYLE---
+# Veil of Deceit - Цветовая палитра дарк-фэнтези
+
+## 🎨 Основные цвета
+
+### Фоновые цвета
+- **Deep Background**: `#090910` - Глубокий тёмно-синий, основной фон
+- **Card Gradient**: 
+  - От: `rgba(18, 12, 28, 0.97)` - Тёмно-фиолетовый
+  - До: `rgba(12, 8, 20, 0.99)` - Очень тёмный фиолетовый
+- **Input Background**: `rgba(10, 6, 20, 0.9)` - Почти чёрный с фиолетовым оттенком
+
+### Золотые акценты (Gold/Amber)
+Используются для основных элементов интерфейса, никнейма игрока:
+- **Primary**: `#e8c97a` - Яркий золотой
+- **Text**: `#d4b878` - Приглушённый золотой для текста
+- **Muted**: `rgba(180, 130, 60, 0.6)` - Полупрозрачный золотой
+- **Border**: `rgba(180, 130, 60, 0.22)` - Тонкая золотая граница
+- **Hover**: `rgba(220, 170, 70, 0.6)` - Яркий золотой при наведении
+
+### Фиолетовые акценты (Purple/Violet)
+Используются для многопользовательских элементов, кода приглашения:
+- **Primary**: `#d4a8ff` - Яркий фиолетовый
+- **Text**: `#c09ee0` - Приглушённый фиолетовый для текста
+- **Muted**: `#a07bc8` - Более тёмный фиолетовый
+- **Border**: `rgba(120, 70, 180, 0.3)` - Фиолетовая граница
+- **Hover**: `rgba(160, 100, 220, 0.6)` - Фиолетовый при наведении
+- **Label**: `rgba(140, 90, 200, 0.65)` - Цвет для меток
+
+## 🎮 Кнопки
+
+### Кнопка "Играть соло" (Золотая)
+```css
+/* Обычное состояние */
+background: linear-gradient(135deg, 
+  rgba(100, 60, 10, 0.7) 0%, 
+  rgba(70, 35, 5, 0.85) 50%, 
+  rgba(90, 50, 8, 0.75) 100%);
+color: #c9a85c;
+border: 1px solid rgba(180, 130, 60, 0.35);
+
+/* При наведении */
+background: linear-gradient(135deg, 
+  rgba(140, 90, 20, 0.9) 0%, 
+  rgba(100, 55, 10, 0.95) 50%, 
+  rgba(120, 70, 15, 0.9) 100%);
+color: #f5dc8a;
+border: 1px solid rgba(220, 170, 70, 0.6);
+```
+
+### Кнопка "Играть вдвоём" (Фиолетовая)
+```css
+/* Обычное состояние */
+background: linear-gradient(135deg, 
+  rgba(30, 12, 60, 0.7) 0%, 
+  rgba(18, 6, 40, 0.85) 50%, 
+  rgba(25, 10, 50, 0.75) 100%);
+color: #a07bc8;
+border: 1px solid rgba(120, 70, 180, 0.3);
+
+/* При наведении */
+background: linear-gradient(135deg, 
+  rgba(50, 20, 90, 0.95) 0%, 
+  rgba(30, 10, 65, 0.98) 50%, 
+  rgba(45, 18, 80, 0.95) 100%);
+color: #d4a8ff;
+border: 1px solid rgba(160, 100, 220, 0.6);
+```
+
+## ✨ Атмосферные эффекты
+
+### Свечения
+- **Top Glow** (верхнее фиолетовое): `rgba(120, 50, 180, 0.6)`
+- **Bottom Ember** (нижний огненный): `rgba(180, 60, 20, 0.7)`
+
+### Тени карточки
+```css
+box-shadow: 
+  0 0 60px rgba(100, 40, 160, 0.12),    /* Фиолетовое свечение */
+  0 0 120px rgba(0, 0, 0, 0.8),         /* Глубокая тень */
+  inset 0 1px 0 rgba(180, 130, 60, 0.08); /* Внутренний золотой блик */
+```
+
+## 📝 Типографика
+
+### Шрифты
+- **Cinzel**: Основной шрифт для кнопок и инпутов
+- **Cinzel Decorative**: Декоративный шрифт для заголовка "VEIL OF DECEIT"
+- **IM Fell English**: Курсивный шрифт для подзаголовков и подсказок
+
+### Руны
+Unicode руны в футере: `ᚠ ᚢ ᚦ ᚨ ᚱ`
+
+## 🔧 CSS переменные
+
+Все цвета доступны через CSS переменные в `/src/styles/theme.css`:
+
+```css
+var(--veilofdeceit-bg-deep)
+var(--veilofdeceit-gold-primary)
+var(--veilofdeceit-purple-primary)
+var(--veilofdeceit-btn-solo-bg)
+var(--veilofdeceit-btn-duo-bg)
+/* и другие... */
+```
+
+## 📱 Применение
+
+Используйте готовые CSS классы из `/src/styles/veilofdeceit.css`:
+
+```html
+<div class="veilofdeceit-bg">
+  <div class="veilofdeceit-card">
+    <input class="veilofdeceit-input" />
+    <button class="veilofdeceit-btn-solo">Играть соло</button>
+  </div>
+</div>
+```
+
+## 🎨 Настройка цветов
+
+Чтобы изменить цветовую схему:
+1. Отредактируйте переменные в `/src/styles/theme.css` (секция veilofdeceit)
+2. Сохраните файл - изменения применятся автоматически ко всему интерфейсу
+3. Можете создать альтернативные темы (например, светлую или с другими акцентами)

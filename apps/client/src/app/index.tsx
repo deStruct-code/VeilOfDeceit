@@ -1,4 +1,4 @@
-import './global.css'
+import './index.css'
 import { AppProviders } from './providers/AppProviders'
 import { AppRouter } from './router/AppRouter'
 

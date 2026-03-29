@@ -1,5 +1,6 @@
 import "dotenv/config";
 import express from "express";
+import cookieParser from 'cookie-parser';
 import path from "path";
 import fs from "fs";
 import http from "http";
@@ -11,6 +12,7 @@ import { clone, createInitialGameState, resolveFullTurn } from "./game/gameLogic
 import { db, runMigration } from "./config/db";
 import { gameRepository } from "./modules/game/game.repository";
 import type { GameState } from "./game/types";
+import { authRouter } from "./modules/auth/auth.router";
 
 const app = express();
 
@@ -89,6 +91,8 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
+app.use(cookieParser() as any)
+app.use('/auth', authRouter);
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Health

@@ -14,8 +14,10 @@ build/
 
 # окружение
 .env
+.env.ts
 .env.local
-.env.*.local
+.env.*
+apps/server/src/config/env.ts
 
 # логи
 npm-debug.log*
@@ -35,3 +37,10 @@ Thumbs.db
 .cache/
 .next/
 out/
+
+
+# архивы
+.zip
+
+# 
+/auth

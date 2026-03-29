@@ -64,7 +64,6 @@ export function RoomPage() {
     })
 
     ws.addEventListener('close', () => {
-      // If we already moved to game, ignore disconnect here.
       setState((prev) => (prev === 'ready' ? prev : 'error'))
       setError((prev) => prev ?? 'Соединение закрыто.')
     })
@@ -79,36 +78,72 @@ export function RoomPage() {
     }
   }, [roomCode])
 
+  const pillClass = state === 'ready'
+    ? `${styles.pill} ${styles.pillReady}`
+    : state === 'error'
+      ? `${styles.pill} ${styles.pillError}`
+      : styles.pill
+
+  const pillText = {
+    connecting: 'подключение...',
+    waiting:    `ожидание ( ${playerCount} / 2 )`,
+    ready:      `готово ( ${playerCount} / 2 )`,
+    error:      'ошибка',
+  }[state]
+
+  const statusText = {
+    connecting: 'Создаём связь с сервером.',
+    waiting:    'Ждём второго игрока. Отправь ему этот код.',
+    ready:      'Сессия стартует...',
+    error:      error ?? 'Неизвестная ошибка.',
+  }[state]
+
   return (
     <div className={styles.page}>
       <div className={styles.card}>
+
+        {/* Код + пилюля */}
         <div className={styles.topRow}>
           <div className={styles.code}>{roomCode || '??????'}</div>
-          <div className={styles.pill}>
-            {state === 'connecting' && 'подключение...'}
-            {state === 'waiting' && `ожидание игрока ( ${playerCount}/2 )`}
-            {state === 'ready' && `готово ( ${playerCount}/2 )`}
-            {state === 'error' && 'ошибка'}
+          <div className={pillClass}>{pillText}</div>
+        </div>
+
+        <div className={styles.divider} />
+
+        {/* Слоты игроков */}
+        <div className={styles.slots}>
+          <div className={`${styles.slot} ${playerCount >= 1 ? styles.slotFilled : styles.slotEmpty}`}>
+            {playerCount >= 1 ? 'Игрок I' : 'ожидание...'}
+          </div>
+          <div className={`${styles.slot} ${playerCount >= 2 ? styles.slotFilled : styles.slotEmpty}`}>
+            {playerCount >= 2 ? 'Игрок II' : 'ожидание...'}
           </div>
         </div>
 
-        <p className={styles.status}>
-          {state === 'connecting' && 'Создаём связь с сервером.'}
-          {state === 'waiting' && 'Ждём второго игрока. Отправь ему этот код.'}
-          {state === 'ready' && 'Сессия стартует...'}
-          {state === 'error' && (error ?? 'Неизвестная ошибка.')}
+        {/* Статус */}
+        <p className={`${styles.status} ${state === 'error' ? styles.statusError : ''}`}>
+          {state === 'waiting'
+            ? <span className={styles.waitingDots}>{statusText}</span>
+            : statusText
+          }
         </p>
 
+        {/* Кнопки */}
         <div className={styles.actions}>
-          <button className={styles.btn} onClick={() => navigate('/')}>Назад в лобби</button>
+          <button className={styles.btn} onClick={() => navigate('/')}>
+            ← Назад
+          </button>
           {state === 'ready' && (
-            <button className={`${styles.btn} ${styles.btnPrimary}`} onClick={() => navigate(`/game/${roomCode}`)}>
-              Перейти в игру
+            <button
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              onClick={() => navigate(`/game/${roomCode}`)}
+            >
+              Войти в игру
             </button>
           )}
         </div>
+
       </div>
     </div>
   )
 }
-

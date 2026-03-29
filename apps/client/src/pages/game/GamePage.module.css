@@ -5,7 +5,6 @@
   width: 100dvw;
   height: 100dvh;
   overflow: hidden;
-  background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-sans);
 
@@ -17,6 +16,27 @@
     auto          /* row 5: player bars */
     auto          /* row 6: energy */
     auto;         /* row 7: hands + submit */
+}
+
+/* ── Full-screen background ──────────────────────────────────────── */
+
+.layout::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image: url('/assets/backgrounds/bg1.webp');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  filter: brightness(0.5) saturate(0.8);
+  pointer-events: none;
+}
+
+/* Все прямые дети грида поднимаем над фоном */
+.layout > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* ── Row 1 ───────────────────────────────────────────────────────── */
@@ -32,6 +52,8 @@
   justify-content: flex-end;
   gap: 0.2rem;
   overflow: hidden;
+  background: rgba(12, 13, 16, 0.6);
+  backdrop-filter: blur(4px);
 }
 
 .bossCell {
@@ -43,7 +65,8 @@
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1rem;
-  background: var(--surface-boss);
+  background: rgba(15, 16, 22, 0.75);
+  backdrop-filter: blur(6px);
   gap: 0.5rem;
 }
 
@@ -59,6 +82,8 @@
   font-size: 0.7rem;
   color: var(--text-muted);
   font-family: var(--font-mono);
+  background: rgba(12, 13, 16, 0.6);
+  backdrop-filter: blur(4px);
 }
 
 /* ── Row 2-4: Arena ──────────────────────────────────────────────── */
@@ -67,15 +92,14 @@
   grid-column: 1;
   grid-row: 2 / 5;
   border-right: 1px solid var(--border);
-  /* зарезервировано для кастомных ассетов арены */
-  background: var(--surface-local);
+  background: transparent;
 }
 
 .arenaCenter {
   grid-column: 2;
   grid-row: 2 / 5;
   position: relative;
-  background-image: url('/assets/backgrounds/bg1.webp');
+  /* фон убран отсюда — теперь он на .layout::before */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,9 +117,9 @@
 
 .arenaRight {
   grid-column: 3;
-  grid-row: 2 / 4;   /* row 2-3, deck занимает отдельный row 3 */
+  grid-row: 2 / 4;
   border-left: 1px solid var(--border);
-  background: var(--surface-ally);
+  background: transparent;
 }
 
 .deckCell {
@@ -109,7 +133,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  background: var(--surface-ally);
+  background: rgba(14, 16, 20, 0.55);
+  backdrop-filter: blur(4px);
 }
 
 /* ── Row 5: Player bars ──────────────────────────────────────────── */
@@ -120,6 +145,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   border-top: 1px solid var(--border);
+  background: rgba(12, 13, 16, 0.75);
+  backdrop-filter: blur(6px);
 }
 
 .playerBar {
@@ -141,6 +168,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   border-top: 1px solid var(--border);
+  background: rgba(12, 13, 16, 0.75);
+  backdrop-filter: blur(6px);
 }
 
 .energyCell {
@@ -163,6 +192,8 @@
   grid-template-columns: 1fr 1fr;
   border-top: 1px solid var(--border);
   min-height: 0;
+  background: rgba(12, 13, 16, 0.82);
+  backdrop-filter: blur(8px);
 }
 
 .handCell {
