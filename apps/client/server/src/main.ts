@@ -30,8 +30,6 @@ type ClientInfo = {
 };
 
 const rooms = new Map<RoomCode, Map<PlayerId, ClientInfo>>();
-// Only codes issued by POST /api/rooms or POST /api/game/:id/solo are valid
-const issuedRoomCodes = new Set<RoomCode>();
 const roomSlots = new Map<
     RoomCode,
     Map<PlayerId, "player-1" | "player-2">
@@ -124,12 +122,11 @@ function generateRoomCode(): string {
 
 app.post("/api/rooms", (_req, res) => {
     let code: string;
-    // Avoid (unlikely) collisions with existing active or pending rooms
+    // Avoid (unlikely) collisions with existing active rooms
     do {
         code = generateRoomCode();
-    } while (rooms.has(code) || issuedRoomCodes.has(code));
+    } while (rooms.has(code));
 
-    issuedRoomCodes.add(code);
     res.json({ code });
 });
 
@@ -183,13 +180,6 @@ app.post("/api/game/:id/solo", async (req, res) => {
         res.status(400).json({ error: "Invalid game id" });
         return;
     }
-
-    // Only codes issued by POST /api/rooms are accepted
-    if (!issuedRoomCodes.has(id)) {
-        res.status(403).json({ error: "Room code was not issued by the server." });
-        return;
-    }
-    issuedRoomCodes.delete(id); // consume — the room is now active
 
     const playerName = String(req.body?.playerName || "").trim().slice(0, 24) || "Player";
 
@@ -381,18 +371,6 @@ wss.on("connection", (ws) => {
             ws.send(JSON.stringify({ type: "error", message: "Invalid room code." }));
             ws.close();
             return;
-        }
-
-        // Reject codes that were never issued by the server
-        const roomAlreadyOpen = rooms.has(roomCode);
-        if (!roomAlreadyOpen && !issuedRoomCodes.has(roomCode)) {
-            ws.send(JSON.stringify({ type: "error", message: "Комната не найдена, попробуйте снова." }));
-            ws.close();
-            return;
-        }
-        // First player joining a new room — consume the issued code
-        if (!roomAlreadyOpen) {
-            issuedRoomCodes.delete(roomCode);
         }
 
         if (!playerId) {

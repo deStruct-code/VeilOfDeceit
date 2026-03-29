@@ -29,9 +29,9 @@ Hands       | Ally`s hands
 [x] Fix a styles: The asset of background should be on a whole screen. So all cards and Boss picture will be to z-index ABOVE the background. Now background is cropped in the midddle of arena and there are a lot of information about everything. 
 Size of a bg wil be 1024x1024. 
 [x] Make a google-auth, so player can log into account and save his "progress". "Progress" now is anavailable.
-[] Create a npm run dev:server script, which will be a pull a variables from infra/env/dev.env because now he only use a second arg of || construction in env.ts SEVERENITY: HIGH. 
-[] Make a 6digits code generation from server. Now everyone can type any code and share it with friend. It is not what I want to. SEVERENITY: HIGH
-[] Make a "Share" button while waiting a second player. Link will be a full from search line.
+[x] Create a npm run dev:server script, which will be a pull a variables from infra/env/dev.env because now he only use a second arg of || construction in env.ts SEVERENITY: HIGH. 
+[x] Make a 6digits code generation from server. Now everyone can type any code and share it with friend. It is not what I want to. SEVERENITY: HIGH
+[] Make a "Share" button while waiting a second player. Link will be a full from search line. May I use shorten link? 
 
 -----INFO-----
 
@@ -41,7 +41,7 @@ Genre: Dark Fantasy / Card Game / Co-op / Bluff
 Platforms: web app
 Players: 1/2
 Session Duration: (1-3 min)
-Target Audience: (to define)
+Target Audience: (Card Games fans)
 
 2. High Concept
 
@@ -398,23 +398,3 @@ var(--veilofdeceit-btn-solo-bg)
 var(--veilofdeceit-btn-duo-bg)
 /* и другие... */
 ```
-
-## 📱 Применение
-
-Используйте готовые CSS классы из `/src/styles/veilofdeceit.css`:
-
-```html
-<div class="veilofdeceit-bg">
-  <div class="veilofdeceit-card">
-    <input class="veilofdeceit-input" />
-    <button class="veilofdeceit-btn-solo">Играть соло</button>
-  </div>
-</div>
-```
-
-## 🎨 Настройка цветов
-
-Чтобы изменить цветовую схему:
-1. Отредактируйте переменные в `/src/styles/theme.css` (секция veilofdeceit)
-2. Сохраните файл - изменения применятся автоматически ко всему интерфейсу
-3. Можете создать альтернативные темы (например, светлую или с другими акцентами)
