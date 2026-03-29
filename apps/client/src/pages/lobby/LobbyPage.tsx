@@ -116,7 +116,7 @@ export function LobbyPage() {
 
           {/* ── Никнейм ── */}
           <div className={styles.row}>
-            <div className={styles.label}>Твоё имя</div>
+            <div className={styles.label}>Имя героя</div>
             <div className={styles.nicknameRow}>
               <input
                 className={styles.input}
@@ -130,8 +130,9 @@ export function LobbyPage() {
                 spellCheck={false}
                 readOnly={!!me}
               />
+              //fix this 
               {nicknameSaved && (
-                <span className={styles.savedBadge}>{me ? '● Google' : ""}</span>
+                <span className={styles.savedBadge}>{me ? '● Google' : ''}</span>
               )}
             </div>
           </div>
@@ -147,7 +148,7 @@ export function LobbyPage() {
 
           <div className={styles.actions}>
             <button className={`${styles.btn} ${styles.btnDuo}`} onClick={() => handleEnterRoom(generateRoomCode(6))}>
-              Создать игру (кооп)
+              Игра вдвоём
             </button>
           </div>
 
@@ -168,7 +169,7 @@ export function LobbyPage() {
                 Присоединиться
               </button>
             </div>
-            <p className={styles.hint}>Формат: <b>A-Z</b> и <b>0-9</b>, 6 символов.</p>
+            {/* <p className={styles.hint}>Формат: <b>A-Z</b> и <b>0-9</b>, 6 символов.</p> */}
           </div>
 
         </div>

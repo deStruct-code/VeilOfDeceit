@@ -28,8 +28,8 @@ Hands       | Ally`s hands
 [x] Create a bot, who can play a random cards from his hand. Make a button in loby "Одиночная игра". 
 [x] Fix a styles: The asset of background should be on a whole screen. So all cards and Boss picture will be to z-index ABOVE the background. Now background is cropped in the midddle of arena and there are a lot of information about everything. 
 Size of a bg wil be 1024x1024. 
-[] Make a google-auth, so player can log into account and save his "progress". "Progress" now is anavailable.
-[] Cut-scene, when the game is started it must be a 10second untill cards are given and information about hp and energy are shown. 
+[x] Make a google-auth, so player can log into account and save his "progress". "Progress" now is anavailable.
+[] 
 -----INFO-----
 
 1. General Information
