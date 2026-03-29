@@ -312,3 +312,21 @@
   font-style: normal;
   color: var(--veilofdeceit-purple-muted);
 }
+
+
+.resetNickBtn {
+  background: none;
+  border: 1px solid var(--veilofdeceit-gold-border);
+  border-radius: 3px;
+  color: var(--veilofdeceit-gold-muted);
+  font-size: 14px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.resetNickBtn:hover {
+  color: var(--veilofdeceit-gold-text);
+  border-color: var(--veilofdeceit-gold-hover);
+}
