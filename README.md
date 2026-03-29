@@ -1,5 +1,5 @@
 1. Запустить билд приложения
-npm run build:server
+npm run build
 
 2. Запустить сервер
 npm run dev:server
