@@ -42,5 +42,5 @@ export interface GameState {
     lastReveal?: RevealEntry[];
     winner?: "players" | "boss";
     turnDeadline?: number | null;
-    isSolo?:       boolean
+    isSolo?: boolean;
 }

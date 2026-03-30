@@ -34,7 +34,9 @@ Size of a bg wil be 1024x1024.
 [x] Create a npm run dev:server script, which will be a pull a variables from infra/env/dev.env because now he only use a second arg of || construction in env.ts SEVERENITY: HIGH. 
 [x] Make a 6digits code generation from server. Now everyone can type any code and share it with friend. It is not what I want to. SEVERENITY: HIGH
 [x] Make a "Share" button while waiting a second player. Link will be a full from search line.
-[] Make a 
+[] Make SQL
+[] Make a GamePage mobile-first! So need to rotate mobile to play this game.
+
 
 -----INFO-----
 
@@ -43,7 +45,7 @@ Name: Veil of Deceit
 Genre: Dark Fantasy / Card Game / Co-op / Bluff
 Platforms: web app
 Players: 1/2
-Session Duration: (1-3 min)
+Session Duration: (2-3 min)
 Target Audience: (Card Games fans)
 
 2. High Concept
@@ -140,21 +142,25 @@ Skins / themes
 Battle pass (optional)
 
 16. Roadmap
-MVP
-Core loop
-Basic cards
-1 boss
-2 players
-Post-MVP
+MVP +
+Core loop + 
+Basic cards +
+1 boss + 
+2 players +
+Post-MVP + 
 More cards
 More bosses
 Balance
 
 17. Open Questions
-How strong should bluffing be?
-Can players fully betray each other?
+How strong should bluffing be? 
+It would 
+Can players fully betray each other? 
+No.
 Is there hidden role system?
+Currently no
 How to prevent toxic gameplay?
+There is no chat or something. So now you can play only with person, who paste your link
 
 18. Notes / Ideas
 (free space for anything)

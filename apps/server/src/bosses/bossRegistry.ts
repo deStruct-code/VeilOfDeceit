@@ -20,6 +20,7 @@ export function createBossState(definitionId: string): BossState {
   const def = getBossDefinition(definitionId)
   return {
     definitionId,
+    id: 1,
     name:       def.name,
     hp:         def.maxHp,
     maxHp:      def.maxHp,

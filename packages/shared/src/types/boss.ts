@@ -66,6 +66,7 @@ export interface BossDefinition {
 // Это то что сериализуется в БД и летит на клиент
 
 export interface BossState {
+  id:           number
   definitionId: string      // ссылка на BossDefinition.id
   name:         string
   hp:           number
