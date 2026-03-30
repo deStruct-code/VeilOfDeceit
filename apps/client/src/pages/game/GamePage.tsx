@@ -8,7 +8,9 @@ import {
 import {SubmitAction} from "../../features/submit-action/SubmitAction";
 import {RevealOverlay} from "../../widgets/reveal-overlay/RevealOverlay";
 import {PlayerHand} from "../../widgets/player-hand/PlayerHand";
-import {getRoomPlayerSlot} from "../../shared/lib/playerSlot";
+import {getRoomPlayerSlot, getAllyCardBack} from "../../shared/lib/playerSlot";
+import {getSelectedCardBack, type CardBackId} from "../../entities/card/model/cardBack";
+import {CARD_BACK_COMPONENTS} from "../../entities/card/ui/card-backs/cardBackComponents";
 import type {BossState, Player, StatusEffect} from "@veil/shared";
 import styles from "./GamePage.module.css";
 
@@ -58,6 +60,10 @@ function BossCell({
                     {phase.replace("_", " ")}
                 </span>
 
+                {/*  Для чего эта кнопка? */}
+                {/* <button className={styles.resetBtn} onClick={onReset}>
+                    ↺
+                </button> */}
             </div>
 
             <div className={styles.bossName} style={{color: phaseColor}}>
@@ -157,13 +163,16 @@ function PlayerBar({player, isLocal}: {player: Player; isLocal: boolean}) {
         </div>
     );
 }
+
 // ─── Ally compact panel ───────────────────────────────────────────────────────
- 
-function AllyCompact({player}: {player: Player}) {
+
+function AllyCompact({player, cardBackId}: {player: Player; cardBackId: CardBackId}) {
     const hpPct = (player.hp / player.maxHp) * 100;
     const hpColor =
         hpPct > 50 ? "var(--color-hp)" : hpPct > 25 ? "#f59e0b" : "#ef4444";
- 
+
+    const CardBackSvg = CARD_BACK_COMPONENTS[cardBackId] ?? CARD_BACK_COMPONENTS['veil-mandala'];
+
     return (
         <div className={styles.allyCompact}>
             <div className={styles.allyLeft}>
@@ -185,7 +194,7 @@ function AllyCompact({player}: {player: Player}) {
             <div className={styles.allyCards}>
                 {player.hand.map((_, i) => (
                     <div key={i} className={styles.allyCardBack}>
-                        <span className={styles.allyCardGlyph}>⚔</span>
+                        <CardBackSvg />
                     </div>
                 ))}
             </div>
@@ -284,6 +293,7 @@ export function GamePage() {
         });
     }, [game, localPlayerId, submitAction]);
 
+    // ref чтобы таймер всегда видел свежий handleSkip
     const handleSkipRef = useRef(handleSkip);
     handleSkipRef.current = handleSkip;
 
@@ -300,8 +310,8 @@ export function GamePage() {
             setTimeLeft(left);
         };
 
-        tick();
-        const interval = setInterval(tick, 500);
+        tick(); // сразу
+        const interval = setInterval(tick, 500); // 500мс для плавности
         return () => clearInterval(interval);
     }, [game?.turnDeadline, game?.phase]);
 
@@ -363,12 +373,15 @@ export function GamePage() {
         );
     if (isError || !game)
         return (
-            <div className={styles.loading}>Ошибка подключения к серверу.</div>
+            <div className={styles.loading}>Failed to reach the server.</div>
         );
 
     const localPlayer = game.players.find((p) => p.id === localPlayerId)!;
     const allyPlayer = game.players.find((p) => p.id !== localPlayerId)!;
     const recentLogs = [...game.log].slice(-4);
+
+    const localCardBackId = getSelectedCardBack() as CardBackId;
+    const allyCardBackId  = getAllyCardBack(gameId) as CardBackId;
 
     return (
         <div className={styles.layout}>
@@ -429,7 +442,7 @@ export function GamePage() {
 
             <div className={styles.playerBars}>
                 <PlayerBar player={localPlayer} isLocal={true} />
-                <AllyCompact player={allyPlayer} />
+                <AllyCompact player={allyPlayer} cardBackId={allyCardBackId} />
             </div>
 
 
@@ -442,20 +455,13 @@ export function GamePage() {
                         isLocal={true}
                         selectedCardIds={selectedCardIds}
                         onSelect={handleSelect}
+                        cardBackId={localCardBackId}
                     />
                     <SubmitAction
                         game={game}
                         selectedCardIds={selectedCardIds}
                         playerId={localPlayerId}
                         onSkip={handleSkip}
-                    />
-                </div>
-                <div className={styles.handCell}>
-                    <PlayerHand
-                        player={allyPlayer}
-                        isLocal={false}
-                        selectedCardIds={[]}
-                        onSelect={() => {}}
                     />
                 </div>
             </div>

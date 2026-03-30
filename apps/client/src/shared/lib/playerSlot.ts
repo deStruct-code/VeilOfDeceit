@@ -14,3 +14,10 @@ export function getRoomPlayerSlot(roomCode: string): PlayerSlot | null {
   return null
 }
 
+export function setAllyCardBack(roomCode: string, cardBackId: string) {
+  sessionStorage.setItem(`veil.allyCardBack.${roomCode}`, cardBackId)
+}
+
+export function getAllyCardBack(roomCode: string): string {
+  return sessionStorage.getItem(`veil.allyCardBack.${roomCode}`) ?? 'veil-mandala'
+}

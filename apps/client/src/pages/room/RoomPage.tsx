@@ -3,8 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { normalizeRoomCode } from '../../shared/lib/roomCode'
 import { getOrCreatePlayerId } from '../../shared/lib/playerId'
 import { createLobbySocket, type LobbyServerMessage } from '../../shared/lib/ws'
-import { getOrGeneratePlayerName } from '../../shared/lib/playerName'
-import { setRoomPlayerSlot } from '../../shared/lib/playerSlot'
+import { getOrGeneratePlayerName, getPlayerName } from '../../shared/lib/playerName'
+import { setRoomPlayerSlot, setAllyCardBack } from '../../shared/lib/playerSlot'
+import { getSelectedCardBack } from '../../entities/card/model/cardBack'
 import styles from './RoomPage.module.css'
 
 type ConnectionState = 'connecting' | 'waiting' | 'ready' | 'error'
@@ -63,7 +64,7 @@ export function RoomPage() {
     setError(null)
 
     ws.addEventListener('open', () => {
-      ws.send(JSON.stringify({ type: 'join', roomCode, playerId: playerIdRef.current, playerName: getOrGeneratePlayerName() }))
+      ws.send(JSON.stringify({ type: 'join', roomCode, playerId: playerIdRef.current, playerName: getOrGeneratePlayerName(), cardBackId: getSelectedCardBack() }))
     })
 
     ws.addEventListener('message', (evt) => {
@@ -83,12 +84,14 @@ export function RoomPage() {
       if (msg.type === 'joined') {
         setPlayerCount(msg.playerCount)
         setRoomPlayerSlot(roomCode, msg.slot)
+        if (msg.allyCardBackId) setAllyCardBack(roomCode, msg.allyCardBackId)
         setState(msg.playerCount >= 2 ? 'ready' : 'waiting')
         return
       }
 
       if (msg.type === 'ready') {
         setPlayerCount(msg.playerCount)
+        if (msg.allyCardBackId) setAllyCardBack(roomCode, msg.allyCardBackId)
         setState('ready')
         navigate(`/game/${roomCode}`)
       }
@@ -151,7 +154,6 @@ export function RoomPage() {
 
         {/* Код + пилюля */}
         <div className={styles.topRow}>
-          <div className={styles.code}>{roomCode || '??????'}</div>
           <div className={pillClass}>{pillText}</div>
         </div>
 
@@ -160,7 +162,7 @@ export function RoomPage() {
         {/* Слоты игроков */}
         <div className={styles.slots}>
           <div className={`${styles.slot} ${playerCount >= 1 ? styles.slotFilled : styles.slotEmpty}`}>
-            {playerCount >= 1 ? 'Игрок I' : 'ожидание...'}
+            {playerCount >= 1 ? `${getPlayerName()}` : 'ожидание...'}
           </div>
           <div className={`${styles.slot} ${playerCount >= 2 ? styles.slotFilled : styles.slotEmpty}`}>
             {playerCount >= 2 ? 'Игрок II' : 'ожидание...'}
@@ -201,7 +203,7 @@ export function RoomPage() {
               className={`${styles.btnShare} ${copied ? styles.btnShareCopied : ''}`}
               onClick={handleShare}
             >
-              {copied ? 'Скопировано' : 'Пригласить'}
+              {copied ? 'Скопировано' : `${roomCode}` }
             </button>
           )}
           {state === 'ready' && (

@@ -2,8 +2,12 @@ export type LobbyClientMessage =
   | { type: 'join'; roomCode: string; playerId: string; playerName: string }
 
 export type LobbyServerMessage =
-  | { type: 'joined'; roomCode: string; playerCount: number; slot: 'player-1' | 'player-2' }
-  | { type: 'ready'; roomCode: string; playerCount: number }
+  | {
+    [x: string]: any; type: 'joined'; roomCode: string; playerCount: number; slot: 'player-1' | 'player-2' 
+}
+  | {
+    [x: string]: any; type: 'ready'; roomCode: string; playerCount: number 
+}
   | { type: 'error'; message: string }
 
 function getWsBaseUrl(): string {
