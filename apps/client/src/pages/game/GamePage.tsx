@@ -284,7 +284,6 @@ export function GamePage() {
         });
     }, [game, localPlayerId, submitAction]);
 
-    // ref чтобы таймер всегда видел свежий handleSkip
     const handleSkipRef = useRef(handleSkip);
     handleSkipRef.current = handleSkip;
 
@@ -301,8 +300,8 @@ export function GamePage() {
             setTimeLeft(left);
         };
 
-        tick(); // сразу
-        const interval = setInterval(tick, 500); // 500мс для плавности
+        tick();
+        const interval = setInterval(tick, 500);
         return () => clearInterval(interval);
     }, [game?.turnDeadline, game?.phase]);
 

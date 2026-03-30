@@ -11,9 +11,10 @@ interface Props {
 export function CardBackShowcase({ initialSelected, onBack }: Props) {
   const [selected, setSelected] = useState<CardBackId>(initialSelected)
 
-  function handleSelect(id: CardBackId) {
-    setSelected(id)
-    saveSelectedCardBack(id)
+  function handleSelect(card: typeof CARD_BACKS[0]) {
+    if (card.isLocked) return;
+    setSelected(card.id)
+    saveSelectedCardBack(card.id)
   }
 
   function handleConfirm() {
@@ -34,21 +35,22 @@ export function CardBackShowcase({ initialSelected, onBack }: Props) {
         </button>
 
         <div className={styles.header}>
-          <div className={styles.headerLabel}>Дизайн колоды</div>
+          <div className={styles.headerLabel}>Специальные рубашки</div>
           <h1 className={styles.headerTitle}>РУБАШКИ КАРТ</h1>
-          <p className={styles.headerSub}>4 варианта — выбери свой путь</p>
+          <p className={styles.headerSub}>Доступ откроется по мере прохождения</p>
         </div>
 
         <div className={styles.grid}>
           {CARD_BACKS.map((card) => {
             const CardComp = CARD_BACK_COMPONENTS[card.id]
             const isSelected = selected === card.id
+            const isLocked = card.isLocked;
             return (
               <div
                 key={card.id}
                 className={styles.cardItem}
                 style={{ transform: isSelected ? 'scale(1.04)' : 'scale(1)' }}
-                onClick={() => handleSelect(card.id)}
+                onClick={() => handleSelect(card)}
               >
                 <div
                   className={styles.cardWrapper}
@@ -60,6 +62,12 @@ export function CardBackShowcase({ initialSelected, onBack }: Props) {
                   }}
                 >
                   <CardComp />
+                  {isLocked && (
+                  <div className={styles.lockOverlay}>
+                    <div className={styles.lockIcon}>🔒</div>
+                    <div className={styles.hoverText}>Нужно 5 побед</div>
+                  </div>
+                )}
                 </div>
                 <div className={styles.cardLabel}>
                   <div
