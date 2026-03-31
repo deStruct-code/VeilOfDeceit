@@ -1,4 +1,6 @@
 import type { Card, Player, StatusEffect } from '@veil/shared'
+import type { CardBackId } from '../../entities/card/model/cardBack'
+import { CARD_BACK_COMPONENTS } from '../../entities/card/ui/card-backs/cardBackComponents'
 import styles from './PlayerHand.module.css'
 
 interface Props {
@@ -6,6 +8,7 @@ interface Props {
     isLocal: boolean
     selectedCardIds: string[]
     onSelect: (cardId: string) => void
+    cardBackId?: CardBackId
 }
 
 const typeColors: Record<string, string> = {
@@ -69,7 +72,7 @@ function CardBack() {
     )
 }
 
-export function PlayerHand({ player, isLocal, selectedCardIds, onSelect }: Props) {
+export function PlayerHand({ player, isLocal, selectedCardIds, onSelect, cardBackId = 'veil-mandala' }: Props) {
     const hpPct = (player.hp / player.maxHp) * 100
     const hpColor = hpPct > 50 ? 'var(--color-hp)' : hpPct > 25 ? '#f59e0b' : '#ef4444'
 
@@ -145,7 +148,16 @@ export function PlayerHand({ player, isLocal, selectedCardIds, onSelect }: Props
                             />
                         )
                     })
-                    : player.hand.map((_, i) => <CardBack key={i} />)
+                    : player.hand.map((_, i) => {
+                        const CardBackSvg = CARD_BACK_COMPONENTS[cardBackId] ?? CARD_BACK_COMPONENTS['veil-mandala']
+                        return (
+                            <div key={i} className={styles.cardBack}>
+                                <div className={styles.cardBackInner}>
+                                    <CardBackSvg />
+                                </div>
+                            </div>
+                        )
+                    })
                 }
             </div>
         </div>

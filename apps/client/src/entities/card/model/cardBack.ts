@@ -38,7 +38,7 @@ export const CARD_BACKS: CardBackDef[] = [
         subtitle: "Чешуя & Бронза",
         accent: "#c07030",
         accent2: "#8b0020",
-        isLocked: true,
+        isLocked: false,
         openWhen: "Победите 10 раз Скелета",
     },
     {
@@ -47,7 +47,7 @@ export const CARD_BACKS: CardBackDef[] = [
         subtitle: "Бездна & Бирюза",
         accent: "#0a9880",
         accent2: "#c0b898",
-        isLocked: true,
+        isLocked: false,
         openWhen: "Победите 10 раз Гуля",
     },
     {
@@ -56,7 +56,7 @@ export const CARD_BACKS: CardBackDef[] = [
         subtitle: "Сталь & Кровь",
         accent: "#9090a8",
         accent2: "#800018",
-        isLocked: true,
+        isLocked: false,
         openWhen: "Победите 10 раз Лича",
     },
 ];

@@ -204,7 +204,7 @@ export function LobbyPage() {
                         <RuneSymbol />
                     </div>
                     <p className={styles.subtitle}>
-                        Вуаль Недоверия. <br /> Сражайся с боссами и не верь никому.
+                        Вуаль Обмана. <br /> Сражайся с боссами и не верь никому.
                     </p>
                 </div>
 
