@@ -160,7 +160,18 @@ export function LobbyPage() {
 
     useEffect(() => {
         if (searchParams.get("auth") === "error") setAuthError(true);
-    }, [searchParams]);
+        const joinParam = searchParams.get("join");
+        if (joinParam) {
+            const code = normalizeRoomCode(joinParam).slice(0, 6);
+            if (code.length === 6) {
+                setRoomCode(code);
+                setPlayerCount(0);
+                setRoomState("connecting");
+                setRoomError(null);
+                setView("room");
+            }
+        }
+    }, []);
 
     useEffect(() => {
         const saved = getPlayerName();
@@ -252,7 +263,11 @@ export function LobbyPage() {
     function handleEnterRoom(code: string) {
         const trimmed = nickname.trim().slice(0, 24);
         if (trimmed) savePlayerName(trimmed);
-        navigate(`/room/${code}`);
+        setRoomCode(code);
+        setPlayerCount(0);
+        setRoomState("connecting");
+        setRoomError(null);
+        setView("room");
     }
 
     async function handleSoloGame() {
