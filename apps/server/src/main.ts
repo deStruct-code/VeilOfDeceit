@@ -37,6 +37,7 @@ const roomSlots = new Map<
     Map<PlayerId, "player-1" | "player-2">
 >();
 const playerNames = new Map<PlayerId, string>();
+const playerCardBacks = new Map<PlayerId, string>();
 
 function broadcast(roomCode: RoomCode, data: unknown) {
     const room = rooms.get(roomCode);
@@ -376,6 +377,7 @@ wss.on("connection", (ws) => {
         const playerId = String(msg.playerId || "").trim();
         const playerName =
             String(msg.playerName || "").trim().slice(0, 24) || "Shadow";
+        const cardBackId = String(msg.cardBackId || "veil-mandala").trim();
 
         if (roomCode.length !== 6) {
             ws.send(JSON.stringify({ type: "error", message: "Invalid room code." }));
@@ -431,6 +433,11 @@ wss.on("connection", (ws) => {
 
         const slot = slots.get(playerId)!;
         playerNames.set(playerId, playerName);
+        playerCardBacks.set(playerId, cardBackId);
+
+        // Find ally's cardBackId if they're already in the room
+        const allyId = [...existingRoom.keys()].find(id => id !== playerId);
+        const allyCardBackId = allyId ? (playerCardBacks.get(allyId) ?? "veil-mandala") : undefined;
 
         ws.send(
             JSON.stringify({
@@ -438,6 +445,7 @@ wss.on("connection", (ws) => {
                 roomCode,
                 playerCount: existingRoom.size,
                 slot,
+                allyCardBackId,
             }),
         );
 
@@ -463,11 +471,19 @@ wss.on("connection", (ws) => {
                 );
             }
 
-            broadcast(roomCode, {
-                type: "ready",
-                roomCode,
-                playerCount: existingRoom.size,
-            });
+            // Send ready to each player with their ally's cardBackId
+            for (const [pid, { ws: pws }] of existingRoom) {
+                const theirAllyId = [...existingRoom.keys()].find(id => id !== pid);
+                const theirAllyBack = theirAllyId
+                    ? (playerCardBacks.get(theirAllyId) ?? "veil-mandala")
+                    : "veil-mandala";
+                pws.send(JSON.stringify({
+                    type: "ready",
+                    roomCode,
+                    playerCount: existingRoom.size,
+                    allyCardBackId: theirAllyBack,
+                }));
+            }
         }
     });
 

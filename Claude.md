@@ -27,6 +27,7 @@ Size of a bg wil be 1024x1024.
 [x] Create a npm run dev:server script, which will be a pull a variables from infra/env/dev.env because now he only use a second arg of || construction in env.ts SEVERENITY: HIGH. 
 [x] Make a 6digits code generation from server. Now everyone can type any code and share it with friend. It is not what I want to. SEVERENITY: HIGH
 [x] Make a "Share" button while waiting a second player. Link will be a full from search line.
+[] Make a RoomPage are flipping with LobbyPage. Imagine that is a card with two sides. They must have a same design (with this pretty corners)
 [] Make SQL-table for bosses. They must have an id, a name, profile
 [] Make a GamePage mobile-first! So need to rotate mobile to play this game.
 
