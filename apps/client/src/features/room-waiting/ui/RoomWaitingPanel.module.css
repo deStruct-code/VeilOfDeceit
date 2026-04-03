@@ -1,0 +1,173 @@
+.panel {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    padding: 40px 24px;
+    background: linear-gradient(180deg, var(--veilofdeceit-bg-card-from) 0%, var(--veilofdeceit-bg-card-to) 100%);
+    border: 1px solid var(--veilofdeceit-gold-border);
+    border-radius: 4px;
+    box-shadow: var(--veilofdeceit-shadow-card);
+    box-sizing: border-box;
+}
+
+.titleBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.titleEyebrow {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    color: var(--veilofdeceit-gold-muted);
+    text-transform: uppercase;
+}
+
+.titleCode {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.5rem;
+    letter-spacing: 0.25em;
+    color: var(--veilofdeceit-gold-primary);
+    text-shadow: 0 0 30px var(--veilofdeceit-gold-hover), 0 2px 8px rgba(0,0,0,0.8);
+    margin: 0;
+}
+
+.pillRow {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.pill {
+    padding: 6px 14px;
+    border-radius: 3px;
+    border: 1px solid var(--veilofdeceit-purple-border);
+    background: var(--veilofdeceit-bg-input);
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--veilofdeceit-purple-text);
+    white-space: nowrap;
+}
+
+.pillReady {
+    border-color: var(--veilofdeceit-gold-muted);
+    color: var(--veilofdeceit-gold-text);
+}
+
+.pillError {
+    border-color: rgba(180,40,40,0.4);
+    color: var(--destructive);
+}
+
+.slots {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.slot {
+    flex: 1;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid var(--veilofdeceit-gold-border);
+    background: var(--veilofdeceit-bg-input);
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Cinzel', serif;
+}
+
+.slotFilled {
+    border-color: var(--veilofdeceit-gold-muted);
+    color: var(--veilofdeceit-gold-text);
+}
+
+.slotEmpty {
+    border-color: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.15);
+    font-style: italic;
+}
+
+.status {
+    margin: 0;
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: var(--veilofdeceit-gold-text-muted);
+    text-align: center;
+    width: 100%;
+}
+
+.statusError {
+    color: var(--destructive);
+    font-style: normal;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.btnSolo {
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--veilofdeceit-btn-solo-bg);
+    border: 1px solid var(--veilofdeceit-gold-border);
+    border-radius: 3px;
+    color: var(--veilofdeceit-btn-solo-text);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.4), inset 0 1px 0 var(--veilofdeceit-gold-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btnSolo:hover {
+    background: var(--veilofdeceit-btn-solo-hover);
+    border-color: var(--veilofdeceit-gold-hover);
+    color: var(--veilofdeceit-btn-solo-text-hover);
+    box-shadow: 0 0 24px var(--veilofdeceit-amber-600), inset 0 1px 0 var(--veilofdeceit-gold-muted);
+}
+
+.btnDuo {
+    width: 100%;
+    padding: 13px 20px;
+    background: var(--veilofdeceit-btn-duo-bg);
+    border: 1px solid var(--veilofdeceit-purple-border);
+    border-radius: 3px;
+    color: var(--veilofdeceit-btn-duo-text);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btnDuo:hover {
+    background: var(--veilofdeceit-btn-duo-hover);
+    border-color: var(--veilofdeceit-purple-hover);
+    color: var(--veilofdeceit-btn-duo-text-hover);
+}
+
+.btnCopied {
+    border-color: var(--veilofdeceit-gold-hover) !important;
+    color: var(--veilofdeceit-gold-text) !important;
+}

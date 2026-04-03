@@ -53,71 +53,13 @@
   background-size: 200px 200px;
 }
 
-/* ── Flip scene ──────────────────────────────────────────────────── */
+/* ── Scene wrapper ───────────────────────────────────────────────── */
 
 .scene {
   width: 100%;
   max-width: 384px;
-  perspective: 1200px;
   position: relative;
   z-index: 1;
-}
-
-.cardInner {
-  position: relative;
-  width: 100%;
-  transform-style: preserve-3d;
-  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
-}
-
-.cardInnerFlipped {
-  transform: rotateY(180deg);
-}
-
-.cardFace {
-  position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 28px;
-  padding: 40px 24px;
-  background: linear-gradient(180deg, var(--veilofdeceit-bg-card-from) 0%, var(--veilofdeceit-bg-card-to) 100%);
-  border: 1px solid var(--veilofdeceit-gold-border);
-  border-radius: 4px;
-  box-shadow: var(--veilofdeceit-shadow-card);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  box-sizing: border-box;
-}
-
-.cardFront {
-  /* default — faces viewer */
-}
-
-.cardBack {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: rotateY(180deg);
-}
-
-/* ── Card ── (legacy alias, keep for safety) ─────────────────────── */
-
-.card {
-  position: relative;
-  width: 100%;
-  max-width: 384px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 28px;
-  padding: 40px 24px;
-  background: linear-gradient(180deg, var(--veilofdeceit-bg-card-from) 0%, var(--veilofdeceit-bg-card-to) 100%);
-  border: 1px solid var(--veilofdeceit-gold-border);
-  border-radius: 4px;
-  box-shadow: var(--veilofdeceit-shadow-card);
 }
 
 /* ── Title block ─────────────────────────────────────────────────── */
@@ -170,28 +112,6 @@
   letter-spacing: 0.04em;
   margin: 0;
   text-align: center;
-}
-
-/* ── Diamond divider ─────────────────────────────────────────────── */
-
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-}
-
-.dividerLine {
-  height: 1px;
-  flex: 1;
-}
-
-.dividerLineLeft {
-  background: linear-gradient(to right, transparent, var(--veilofdeceit-gold-border));
-}
-
-.dividerLineRight {
-  background: linear-gradient(to left, transparent, var(--veilofdeceit-gold-border));
 }
 
 /* ── Form sections ───────────────────────────────────────────────── */
@@ -379,24 +299,6 @@
   flex: 1;
 }
 
-.resetNickBtn {
-  background: none;
-  border: 1px solid var(--veilofdeceit-gold-border);
-  border-radius: 3px;
-  color: var(--veilofdeceit-gold-muted);
-  font-size: 14px;
-  width: 38px;
-  height: 38px;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: all 0.2s;
-}
-
-.resetNickBtn:hover {
-  color: var(--veilofdeceit-gold-text);
-  border-color: var(--veilofdeceit-gold-hover);
-}
-
 /* ── Buttons ─────────────────────────────────────────────────────── */
 
 .buttons {
@@ -466,7 +368,6 @@
   cursor: not-allowed;
 }
 
-/* Join button — compact, purple */
 .btnJoin {
   padding: 11px 14px;
   background: var(--veilofdeceit-btn-duo-bg);
@@ -493,7 +394,6 @@
   cursor: not-allowed;
 }
 
-/* Google */
 .googleBtn {
   display: flex;
   align-items: center;
@@ -519,40 +419,6 @@
   border-color: var(--veilofdeceit-purple-hover);
 }
 
-/* ── Hint ────────────────────────────────────────────────────────── */
-
-.hint {
-  font-size: 0.6rem;
-  color: var(--veilofdeceit-purple-hint);
-  letter-spacing: 0.05em;
-  font-family: 'IM Fell English', serif;
-  font-style: italic;
-  margin: 0;
-}
-
-/* ── Footer runes ────────────────────────────────────────────────── */
-
-.runes {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding-top: 4px;
-}
-
-.rune {
-  font-size: 0.75rem;
-  letter-spacing: 0.1em;
-}
-
-.runeMid {
-  color: var(--veilofdeceit-gold-border);
-}
-
-.runeOuter {
-  color: var(--veilofdeceit-gold-text-muted);
-}
-
 /* ── Card backs link ─────────────────────────────────────────────── */
 
 .cardBacksLink {
@@ -571,88 +437,4 @@
 
 .cardBacksLink:hover {
   color: var(--veilofdeceit-gold-hover);
-}
-
-/* ── Room back-side extras ───────────────────────────────────────── */
-
-.titleCode {
-  letter-spacing: 0.25em;
-  font-size: 1.5rem;
-}
-
-.slots {
-  display: flex;
-  gap: 10px;
-  width: 100%;
-}
-
-.slot {
-  flex: 1;
-  padding: 10px;
-  border-radius: 3px;
-  border: 1px solid var(--veilofdeceit-gold-border);
-  background: var(--veilofdeceit-bg-input);
-  text-align: center;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.slotFilled {
-  border-color: var(--veilofdeceit-gold-muted);
-  color: var(--veilofdeceit-gold-text);
-}
-
-.slotEmpty {
-  border-color: rgba(255,255,255,0.05);
-  color: rgba(255,255,255,0.15);
-  font-style: italic;
-}
-
-.status {
-  margin: 0;
-  font-family: 'IM Fell English', serif;
-  font-style: italic;
-  font-size: 0.82rem;
-  line-height: 1.6;
-  color: var(--veilofdeceit-gold-text-muted);
-  text-align: center;
-  width: 100%;
-}
-
-.statusError {
-  color: var(--destructive);
-  font-style: normal;
-}
-
-.spinner {
-  display: block;
-  margin: 0 auto 8px;
-}
-
-.pill {
-  padding: 6px 14px;
-  border-radius: 3px;
-  border: 1px solid var(--veilofdeceit-purple-border);
-  background: var(--veilofdeceit-bg-input);
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  color: var(--veilofdeceit-purple-text);
-  white-space: nowrap;
-}
-
-.pillReady {
-  border-color: var(--veilofdeceit-gold-muted);
-  color: var(--veilofdeceit-gold-text);
-}
-
-.pillError {
-  border-color: rgba(180,40,40,0.4);
-  color: var(--destructive);
-}
-
-.btnCopied {
-  border-color: var(--veilofdeceit-gold-hover) !important;
-  color: var(--veilofdeceit-gold-text) !important;
 }

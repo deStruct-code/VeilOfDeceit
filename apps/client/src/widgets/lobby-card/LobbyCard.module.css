@@ -1,0 +1,19 @@
+.scene {
+    max-width: 384px;
+    margin: 0 auto;
+}
+
+.face {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    padding: 40px 24px;
+    background: linear-gradient(180deg, var(--veilofdeceit-bg-card-from) 0%, var(--veilofdeceit-bg-card-to) 100%);
+    border: 1px solid var(--veilofdeceit-gold-border);
+    border-radius: 4px;
+    box-shadow: var(--veilofdeceit-shadow-card);
+    box-sizing: border-box;
+}
