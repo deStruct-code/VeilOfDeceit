@@ -15,62 +15,47 @@ const typeColors: Record<string, string> = {
 
 interface Props {
     card: Card
-    /** Когда true — карта переворачивается лицом вверх */
     revealed: boolean
-    /** Задержка перед началом флипа (мс), для каскадных анимаций */
     delay?: number
     cardBackId?: CardBackId
 }
 
-/**
- * Игровая карта с flip-анимацией.
- * Используется в RevealOverlay при раскрытии карт.
- */
 export function FlippableCard({ card, revealed, delay = 0, cardBackId = 'veil-mandala' }: Props) {
-    const [isFlipped, setIsFlipped] = useState(false)
+    const [side, setSide] = useState<'front' | 'back'>('front')
 
     useEffect(() => {
-        if (!revealed) {
-            setIsFlipped(false)
-            return
-        }
-        const timer = setTimeout(() => setIsFlipped(true), delay)
-        return () => clearTimeout(timer)
+        if (!revealed) { setSide('front'); return }
+        const t = setTimeout(() => setSide('back'), delay)
+        return () => clearTimeout(t)
     }, [revealed, delay])
 
     const CardBackSvg = CARD_BACK_COMPONENTS[cardBackId] ?? CARD_BACK_COMPONENTS['veil-mandala']
 
-    const cardFront = (
-        <div
-            className={styles.front}
-            style={{ '--accent': typeColors[card.type] } as React.CSSProperties}
-        >
-            <div className={styles.cardTop}>
-                <span className={styles.cardType}>{card.type}</span>
-                {card.cost > 0 && <span className={styles.cardCost}>{card.cost}⚡</span>}
-            </div>
-            <div className={styles.cardName}>{card.name}</div>
-            <div className={styles.cardBottom}>
-                {card.value > 0 && <span className={styles.cardValue}>{card.value}</span>}
-                {card.effect && <span className={styles.cardEffect}>{card.effect}</span>}
-            </div>
-        </div>
-    )
-
-    const cardBack = (
-        <div className={styles.back}>
-            <div className={styles.cardBackInner}>
-                <CardBackSvg />
-            </div>
-        </div>
-    )
-
     return (
         <div className={styles.wrapper}>
             <FlipCard
-                flipped={isFlipped}
-                front={cardFront}
-                back={cardBack}
+                side={side}
+                front={
+                    <div className={styles.back}>
+                        <div className={styles.cardBackInner}><CardBackSvg /></div>
+                    </div>
+                }
+                back={
+                    <div
+                        className={styles.front}
+                        style={{ '--accent': typeColors[card.type] } as React.CSSProperties}
+                    >
+                        <div className={styles.cardTop}>
+                            <span className={styles.cardType}>{card.type}</span>
+                            {card.cost > 0 && <span className={styles.cardCost}>{card.cost}⚡</span>}
+                        </div>
+                        <div className={styles.cardName}>{card.name}</div>
+                        <div className={styles.cardBottom}>
+                            {card.value > 0 && <span className={styles.cardValue}>{card.value}</span>}
+                            {card.effect && <span className={styles.cardEffect}>{card.effect}</span>}
+                        </div>
+                    </div>
+                }
             />
         </div>
     )

@@ -2,30 +2,38 @@ import { type ReactNode } from 'react'
 import { FlipCard } from '../../shared/ui/FlipCard'
 import { RoomWaitingPanel } from '../../features/room-waiting'
 import { useRoomWaiting } from '../../features/room-waiting'
+
+import { getSelectedCardBack } from '../../entities/card/model/cardBack'
 import styles from './LobbyCard.module.css'
+import { CardBackPanel } from '../../features/select-card-back/CardBackPanel'
+
+export type LobbyView = 'menu' | 'room' | 'cards'
 
 interface Props {
+    view: LobbyView
     roomCode: string
-    flipped: boolean
     onBack: () => void
     front: ReactNode
 }
 
 /**
- * Виджет-карточка лобби с flip-анимацией.
- * front — лицевая сторона (меню), back — комната ожидания.
- * Управляет WS-соединением через useRoomWaiting.
+ * Виджет-карточка лобби с тремя гранями:
+ *   front  — главное меню
+ *   back   — комната ожидания (rotateY 180deg)
+ *   left   — выбор рубашек   (rotateY -180deg)
  */
-export function LobbyCard({ roomCode, flipped, onBack, front }: Props) {
+export function LobbyCard({ view, roomCode, onBack, front }: Props) {
     const { roomState, playerCount, roomError, copied, handleShare, handleEnterGame } =
-        useRoomWaiting({ roomCode, active: flipped })
+        useRoomWaiting({ roomCode, active: view === 'room' })
+
+    const flipSide = view === 'room' ? 'back' : view === 'cards' ? 'left' : 'front'
 
     return (
         <FlipCard
-            flipped={flipped}
+            side={flipSide}
             className={styles.scene}
             front={
-                <div className={styles.face}>
+                <div className={styles.menuFace}>
                     {front}
                 </div>
             }
@@ -39,6 +47,12 @@ export function LobbyCard({ roomCode, flipped, onBack, front }: Props) {
                     onShare={handleShare}
                     onBack={onBack}
                     onEnterGame={handleEnterGame}
+                />
+            }
+            left={
+                <CardBackPanel
+                    initialSelected={getSelectedCardBack()}
+                    onBack={onBack}
                 />
             }
         />

@@ -12,9 +12,7 @@ import {
     useCreateRoomMutation,
 } from '../../shared/api/gameApi'
 import { useMe } from '../../shared/lib/useMe'
-import { CardBackShowcase } from '../../features/select-card-back'
-import { getSelectedCardBack } from '../../entities/card/model/cardBack'
-import { LobbyCard } from '../../widgets/lobby-card'
+import { LobbyCard, type LobbyView } from '../../widgets/lobby-card'
 import {
     RuneSymbol,
     DiamondDivider,
@@ -32,7 +30,7 @@ export function LobbyPage() {
     const [searchParams] = useSearchParams()
     const { me, isLoading: isMeLoading, logout } = useMe()
 
-    const [view, setView] = useState<'menu' | 'cards' | 'room'>('menu')
+    const [view, setView] = useState<LobbyView>('menu')
     const [joinCode, setJoinCode] = useState('')
     const [nickname, setNickname] = useState('')
     const [authError, setAuthError] = useState(false)
@@ -116,15 +114,6 @@ export function LobbyPage() {
     }
 
     const isBusy = isSoloLoading || isCreatingRoom
-
-    if (view === 'cards') {
-        return (
-            <CardBackShowcase
-                initialSelected={getSelectedCardBack()}
-                onBack={() => setView('menu')}
-            />
-        )
-    }
 
     const menuFront = (
         <>
@@ -266,8 +255,8 @@ export function LobbyPage() {
 
             <div className={styles.scene}>
                 <LobbyCard
+                    view={view}
                     roomCode={roomCode}
-                    flipped={view === 'room'}
                     onBack={() => setView('menu')}
                     front={menuFront}
                 />
