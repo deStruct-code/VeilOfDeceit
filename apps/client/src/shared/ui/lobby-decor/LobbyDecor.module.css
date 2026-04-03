@@ -1,0 +1,45 @@
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.dividerLine {
+    height: 1px;
+    flex: 1;
+}
+
+.dividerLineLeft {
+    background: linear-gradient(to right, transparent, var(--veilofdeceit-gold-border));
+}
+
+.dividerLineRight {
+    background: linear-gradient(to left, transparent, var(--veilofdeceit-gold-border));
+}
+
+.runes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding-top: 4px;
+}
+
+.rune {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+}
+
+.runeMid {
+    color: var(--veilofdeceit-gold-border);
+}
+
+.runeOuter {
+    color: var(--veilofdeceit-gold-text-muted);
+}
+
+.spinner {
+    display: block;
+    margin: 0 auto 8px;
+}

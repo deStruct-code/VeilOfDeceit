@@ -40,6 +40,13 @@
 .defeat   { color: var(--color-danger); }
 .victory  { color: #fbbf24; }
 
+.flipRow {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
 .reveals {
   display: flex;
   flex-direction: column;

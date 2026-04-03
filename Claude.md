@@ -27,7 +27,8 @@ Size of a bg wil be 1024x1024.
 [x] Create a npm run dev:server script, which will be a pull a variables from infra/env/dev.env because now he only use a second arg of || construction in env.ts SEVERENITY: HIGH. 
 [x] Make a 6digits code generation from server. Now everyone can type any code and share it with friend. It is not what I want to. SEVERENITY: HIGH
 [x] Make a "Share" button while waiting a second player. Link will be a full from search line.
-[] LobbyPage and RoomPage are repeating each other. Which is working? Use only one of them. Keep DRY principle. 
+[x] LobbyPage and RoomPage are repeating each other. Which is working? Use only one of them. Keep DRY principle. 
+[] Make a flipping Card-effect the main mechanic of a game. Use FSD-structure and refactor existing code from LobbyPage.
 
 
 -----INFO-----
@@ -215,7 +216,7 @@ apps/client/src/
 │   ├── config/
 │   └── ui/
 │
-└── mocks/                 # 🔥 важно для старта
+└── mocks/
     ├── game.mock.ts
     └── handlers.ts
 
@@ -294,108 +295,3 @@ infra/
 🔄 Связь слоёв
 React → API → Controller → Service → Game Engine → DB
 
----STYLE---
-# Veil of Deceit - Цветовая палитра дарк-фэнтези
-
-## 🎨 Основные цвета
-
-### Фоновые цвета
-- **Deep Background**: `#090910` - Глубокий тёмно-синий, основной фон
-- **Card Gradient**: 
-  - От: `rgba(18, 12, 28, 0.97)` - Тёмно-фиолетовый
-  - До: `rgba(12, 8, 20, 0.99)` - Очень тёмный фиолетовый
-- **Input Background**: `rgba(10, 6, 20, 0.9)` - Почти чёрный с фиолетовым оттенком
-
-### Золотые акценты (Gold/Amber)
-Используются для основных элементов интерфейса, никнейма игрока:
-- **Primary**: `#e8c97a` - Яркий золотой
-- **Text**: `#d4b878` - Приглушённый золотой для текста
-- **Muted**: `rgba(180, 130, 60, 0.6)` - Полупрозрачный золотой
-- **Border**: `rgba(180, 130, 60, 0.22)` - Тонкая золотая граница
-- **Hover**: `rgba(220, 170, 70, 0.6)` - Яркий золотой при наведении
-
-### Фиолетовые акценты (Purple/Violet)
-Используются для многопользовательских элементов, кода приглашения:
-- **Primary**: `#d4a8ff` - Яркий фиолетовый
-- **Text**: `#c09ee0` - Приглушённый фиолетовый для текста
-- **Muted**: `#a07bc8` - Более тёмный фиолетовый
-- **Border**: `rgba(120, 70, 180, 0.3)` - Фиолетовая граница
-- **Hover**: `rgba(160, 100, 220, 0.6)` - Фиолетовый при наведении
-- **Label**: `rgba(140, 90, 200, 0.65)` - Цвет для меток
-
-## 🎮 Кнопки
-
-### Кнопка "Играть соло" (Золотая)
-```css
-/* Обычное состояние */
-background: linear-gradient(135deg, 
-  rgba(100, 60, 10, 0.7) 0%, 
-  rgba(70, 35, 5, 0.85) 50%, 
-  rgba(90, 50, 8, 0.75) 100%);
-color: #c9a85c;
-border: 1px solid rgba(180, 130, 60, 0.35);
-
-/* При наведении */
-background: linear-gradient(135deg, 
-  rgba(140, 90, 20, 0.9) 0%, 
-  rgba(100, 55, 10, 0.95) 50%, 
-  rgba(120, 70, 15, 0.9) 100%);
-color: #f5dc8a;
-border: 1px solid rgba(220, 170, 70, 0.6);
-```
-
-### Кнопка "Играть вдвоём" (Фиолетовая)
-```css
-/* Обычное состояние */
-background: linear-gradient(135deg, 
-  rgba(30, 12, 60, 0.7) 0%, 
-  rgba(18, 6, 40, 0.85) 50%, 
-  rgba(25, 10, 50, 0.75) 100%);
-color: #a07bc8;
-border: 1px solid rgba(120, 70, 180, 0.3);
-
-/* При наведении */
-background: linear-gradient(135deg, 
-  rgba(50, 20, 90, 0.95) 0%, 
-  rgba(30, 10, 65, 0.98) 50%, 
-  rgba(45, 18, 80, 0.95) 100%);
-color: #d4a8ff;
-border: 1px solid rgba(160, 100, 220, 0.6);
-```
-
-## ✨ Атмосферные эффекты
-
-### Свечения
-- **Top Glow** (верхнее фиолетовое): `rgba(120, 50, 180, 0.6)`
-- **Bottom Ember** (нижний огненный): `rgba(180, 60, 20, 0.7)`
-
-### Тени карточки
-```css
-box-shadow: 
-  0 0 60px rgba(100, 40, 160, 0.12),    /* Фиолетовое свечение */
-  0 0 120px rgba(0, 0, 0, 0.8),         /* Глубокая тень */
-  inset 0 1px 0 rgba(180, 130, 60, 0.08); /* Внутренний золотой блик */
-```
-
-## 📝 Типографика
-
-### Шрифты
-- **Cinzel**: Основной шрифт для кнопок и инпутов
-- **Cinzel Decorative**: Декоративный шрифт для заголовка "VEIL OF DECEIT"
-- **IM Fell English**: Курсивный шрифт для подзаголовков и подсказок
-
-### Руны
-Unicode руны в футере: `ᚠ ᚢ ᚦ ᚨ ᚱ`
-
-## 🔧 CSS переменные
-
-Все цвета доступны через CSS переменные в `/src/styles/theme.css`:
-
-```css
-var(--veilofdeceit-bg-deep)
-var(--veilofdeceit-gold-primary)
-var(--veilofdeceit-purple-primary)
-var(--veilofdeceit-btn-solo-bg)
-var(--veilofdeceit-btn-duo-bg)
-/* и другие... */
-```

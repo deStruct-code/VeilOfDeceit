@@ -1,4 +1,5 @@
 import type { GameState } from '../../shared/types/game'
+import { FlippableCard } from '../../entities/card/ui/FlippableCard'
 import styles from './RevealOverlay.module.css'
 
 interface Props {
@@ -34,7 +35,21 @@ export function RevealOverlay({ game, localPlayerId, onContinue }: Props) {
         </div>
 
         {game.lastReveal && game.lastReveal.length > 0 && (
-          <div className={styles.reveals}>
+          <>
+            {/* ── Визуальный flip карт ── */}
+            <div className={styles.flipRow}>
+              {game.lastReveal.map((r, i) => (
+                <FlippableCard
+                  key={r.playerId}
+                  card={r.card}
+                  revealed={game.phase === 'reveal' || game.phase === 'boss_attack' || game.phase === 'new_cards'}
+                  delay={i * 220}
+                />
+              ))}
+            </div>
+
+            {/* ── Текстовые строки reveal ── */}
+            <div className={styles.reveals}>
             {game.lastReveal.map((r) => (
               <div key={r.playerId} className={`${styles.revealRow} ${r.playerId === localPlayerId ? styles.revealRowLocal : ''}`}>
                 <span className={styles.revealPlayer}>{playerLabel(r.playerId)}</span>
@@ -53,6 +68,7 @@ export function RevealOverlay({ game, localPlayerId, onContinue }: Props) {
               </div>
             ))}
           </div>
+          </>
         )}
 
         <div className={styles.log}>

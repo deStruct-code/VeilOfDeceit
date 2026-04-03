@@ -1,0 +1,1 @@
+export { FlippableCard } from './FlippableCard'
