@@ -4,8 +4,8 @@
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "moduleResolution": "bundler",
     "skipLibCheck": true,
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -17,5 +17,5 @@
       "@veil/shared": ["../../packages/shared/src/index.ts"]
     }
   },
-  "include": ["src", "../../packages/shared/src"] // Добавили shared, чтобы TS видел типы там
+  "include": ["src"]
 }
