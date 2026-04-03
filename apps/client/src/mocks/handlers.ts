@@ -166,6 +166,12 @@ function resolveFullTurn(s: GameState): GameState {
 // ── routes ───────────────────────────────────────────────────────────────────
 
 export const handlers = [
+  // Создание комнаты — нужно для работы кнопок "Играть вдвоём" и "Играть соло" в dev-моке
+  http.post('/api/rooms', async () => {
+    const code = Math.random().toString(36).slice(2, 8).toUpperCase()
+    return HttpResponse.json({ code })
+  }),
+
   http.get('/api/game/:id', async () => {
     return HttpResponse.json(clone(state))
   }),

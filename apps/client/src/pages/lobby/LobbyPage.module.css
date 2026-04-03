@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow-x: hidden;
   position: relative;
   background: var(--veilofdeceit-bg-deep);
   font-family: 'Cinzel', serif;

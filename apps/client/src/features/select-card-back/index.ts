@@ -1,1 +1,1 @@
-export { CardBackShowcase } from './ui/CardBackShowcase'
+export { CardBackPanel } from './CardBackPanel'
