@@ -79,12 +79,12 @@ export const WaitingSpinner = () => (
     <svg
         className={styles.spinner}
         xmlns="http://www.w3.org/2000/svg"
-        width="100"
-        height="100"
+        width="48"
+        height="48"
         viewBox="0 0 100 100"
         overflow="visible"
-        fill="#9ec8e0"
-        stroke="#7b9ac8"
+        fill="#c09ee0"
+        stroke="#a07bc8"
     >
         <defs>
             <polygon id="ldr" points="20,40 28,55 12,55" />
