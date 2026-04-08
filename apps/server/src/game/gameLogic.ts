@@ -1,7 +1,7 @@
 import type {Card, GameState, Player, StatusEffect} from "@veil/shared";
 import {PLAYER_DEFAULTS} from "@veil/shared";
 import {
-    createBossState,
+    createRandomBossState,
     pickNextBossAction,
     checkPhaseTransition,
 } from "../bosses/bossRegistry";
@@ -176,13 +176,12 @@ export function createInitialGameState(
     gameId: string,
     name1 = "Player 1",
     name2 = "Player 2",
-    bossId = "hollow_lich",
 ): GameState {
     return {
         id: gameId,
         phase: "action",
         turn: 1,
-        boss: createBossState(bossId),
+        boss: createRandomBossState(),
         players: [makePlayer("player-1", name1), makePlayer("player-2", name2)],
         log: [{turn: 0, text: "Darkness falls...", type: "system" as const}],
     };

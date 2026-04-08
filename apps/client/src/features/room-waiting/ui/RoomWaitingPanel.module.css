@@ -1,14 +1,18 @@
 .panel {
     position: relative;
-    min-height: 788px;
-    height: 100%;
     width: 100%;
+    min-height: 780px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 28px;
     padding: 40px 24px;
-    background: linear-gradient(180deg, var(--veilofdeceit-bg-card-from) 0%, var(--veilofdeceit-bg-card-to) 100%);
+    background: linear-gradient(
+        180deg,
+        var(--veilofdeceit-bg-card-from) 0%,
+        var(--veilofdeceit-bg-card-to) 100%
+    );
     border: 1px solid var(--veilofdeceit-gold-border);
     border-radius: 4px;
     box-shadow: var(--veilofdeceit-shadow-card);
@@ -24,7 +28,7 @@
 }
 
 .titleEyebrow {
-    font-family: 'Cinzel Decorative', serif;
+    font-family: "Cinzel Decorative", serif;
     font-size: 0.6rem;
     letter-spacing: 0.35em;
     color: var(--veilofdeceit-gold-muted);
@@ -32,11 +36,13 @@
 }
 
 .titleCode {
-    font-family: 'Cinzel Decorative', serif;
+    font-family: "Cinzel Decorative", serif;
     font-size: 1.5rem;
     letter-spacing: 0.25em;
     color: var(--veilofdeceit-gold-primary);
-    text-shadow: 0 0 30px var(--veilofdeceit-gold-hover), 0 2px 8px rgba(0,0,0,0.8);
+    text-shadow:
+        0 0 30px var(--veilofdeceit-gold-hover),
+        0 2px 8px rgba(0, 0, 0, 0.8);
     margin: 0;
 }
 
@@ -51,7 +57,7 @@
     border-radius: 3px;
     border: 1px solid var(--veilofdeceit-purple-border);
     background: var(--veilofdeceit-bg-input);
-    font-family: 'Cinzel', serif;
+    font-family: "Cinzel", serif;
     font-size: 11px;
     letter-spacing: 0.08em;
     color: var(--veilofdeceit-purple-text);
@@ -64,7 +70,7 @@
 }
 
 .pillError {
-    border-color: rgba(180,40,40,0.4);
+    border-color: rgba(180, 40, 40, 0.4);
     color: var(--destructive);
 }
 
@@ -84,7 +90,7 @@
     font-size: 11px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    font-family: 'Cinzel', serif;
+    font-family: "Cinzel", serif;
 }
 
 .slotFilled {
@@ -93,14 +99,14 @@
 }
 
 .slotEmpty {
-    border-color: rgba(255,255,255,0.05);
-    color: rgba(255,255,255,0.15);
+    border-color: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.15);
     font-style: italic;
 }
 
 .status {
     margin: 0;
-    font-family: 'IM Fell English', serif;
+    font-family: "IM Fell English", serif;
     font-style: italic;
     font-size: 0.82rem;
     line-height: 1.6;
@@ -131,10 +137,12 @@
     letter-spacing: 0.2em;
     text-transform: uppercase;
     font-size: 0.78rem;
-    font-family: 'Cinzel', serif;
+    font-family: "Cinzel", serif;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 16px rgba(0,0,0,0.4), inset 0 1px 0 var(--veilofdeceit-gold-border);
+    box-shadow:
+        0 2px 16px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 var(--veilofdeceit-gold-border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -145,7 +153,9 @@
     background: var(--veilofdeceit-btn-solo-hover);
     border-color: var(--veilofdeceit-gold-hover);
     color: var(--veilofdeceit-btn-solo-text-hover);
-    box-shadow: 0 0 24px var(--veilofdeceit-amber-600), inset 0 1px 0 var(--veilofdeceit-gold-muted);
+    box-shadow:
+        0 0 24px var(--veilofdeceit-amber-600),
+        inset 0 1px 0 var(--veilofdeceit-gold-muted);
 }
 
 .btnDuo {
@@ -158,7 +168,7 @@
     letter-spacing: 0.2em;
     text-transform: uppercase;
     font-size: 0.78rem;
-    font-family: 'Cinzel', serif;
+    font-family: "Cinzel", serif;
     cursor: pointer;
     transition: all 0.2s ease;
 }

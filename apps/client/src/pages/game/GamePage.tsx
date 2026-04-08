@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef, useCallback, useMemo} from "react";
+import React, {useState, useEffect, useRef, useCallback, useMemo} from "react";
 import {useParams} from "react-router-dom";
 import {
     useGetGameQuery,
@@ -15,6 +15,55 @@ import type {BossState, Player, StatusEffect} from "@veil/shared";
 import styles from "./GamePage.module.css";
 
 const TURN_SECONDS = 20;
+
+// ─── Boss arena visual ────────────────────────────────────────────────────────
+
+function BossArena({ boss }: { boss: BossState }) {
+    const phaseColor = boss.phase === 1 ? "var(--phase-1)" : "var(--phase-2)";
+    const phaseLabel = boss.phase === 1 ? "Lurking" : "Enraged";
+    const hpPct = boss.hp / boss.maxHp;
+    const isEnraged = boss.phase === 2;
+
+    return (
+        <div className={styles.bossArena}>
+            <div
+                className={`${styles.bossAura} ${isEnraged ? styles.bossAuraEnraged : ""}`}
+                style={{ "--boss-color": phaseColor } as React.CSSProperties}
+            />
+            <div className={styles.bossEntityWrap}>
+                <div
+                    className={`${styles.bossEntity} ${isEnraged ? styles.bossEntityEnraged : ""}`}
+                    style={{ "--boss-color": phaseColor } as React.CSSProperties}
+                >
+                    <div className={styles.bossEntityInner} />
+                </div>
+                <div className={styles.bossArenaInfo}>
+                    <span
+                        className={styles.bossArenaPhase}
+                        style={{ color: phaseColor }}
+                    >
+                        Phase {boss.phase} — {phaseLabel}
+                    </span>
+                    <h1
+                        className={styles.bossArenaName}
+                        style={{ textShadow: `0 0 24px ${phaseColor}80` }}
+                    >
+                        {boss.name}
+                    </h1>
+                    <div className={styles.bossArenaHpBar}>
+                        <div
+                            className={styles.bossArenaHpFill}
+                            style={{ width: `${hpPct * 100}%`, background: phaseColor }}
+                        />
+                    </div>
+                    <span className={styles.bossArenaHpText}>
+                        {boss.hp} / {boss.maxHp} HP
+                    </span>
+                </div>
+            </div>
+        </div>
+    );
+}
 
 // ─── Boss cell ────────────────────────────────────────────────────────────────
 
@@ -431,7 +480,7 @@ export function GamePage() {
             <div className={styles.arenaLeft} />
 
             <div className={styles.arenaCenter}>
-                <span className={styles.arenaPlaceholder}>arena</span>
+                <BossArena boss={game.boss} />
             </div>
 
             <div className={styles.arenaRight} />

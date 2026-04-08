@@ -1,5 +1,6 @@
 import type { BossDefinition, BossAction, BossState, BossPhase } from '@veil/shared'
 import { HOLLOW_LICH } from './hollowLich'
+import { generateRandomBoss } from './randomBoss'
 
 // ─── Реестр всех боссов ───────────────────────────────────────────────────────
 // Чтобы добавить нового босса — достаточно создать файл и добавить сюда
@@ -12,6 +13,25 @@ export function getBossDefinition(id: string): BossDefinition {
   const def = BOSS_REGISTRY[id]
   if (!def) throw new Error(`Unknown boss: "${id}"`)
   return def
+}
+
+// ─── Создание случайного босса ────────────────────────────────────────────────
+// Генерирует новый BossDefinition, регистрирует его и возвращает BossState.
+// Регистрация нужна, чтобы pickNextBossAction/checkPhaseTransition работали.
+
+export function createRandomBossState(): BossState {
+  const def = generateRandomBoss()
+  BOSS_REGISTRY[def.id] = def
+  return {
+    definitionId: def.id,
+    id:           1,
+    name:         def.name,
+    hp:           def.maxHp,
+    maxHp:        def.maxHp,
+    phase:        1,
+    statuses:     [],
+    nextAction:   def.openingAction,
+  }
 }
 
 // ─── Создание начального состояния босса ─────────────────────────────────────
