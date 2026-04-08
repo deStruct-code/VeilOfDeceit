@@ -115,6 +115,151 @@
   user-select: none;
 }
 
+/* ── Boss arena ──────────────────────────────────────────────────── */
+
+.bossArena {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Radial glow behind the entity */
+.bossAura {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 45%,
+    color-mix(in srgb, var(--boss-color) 18%, transparent) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  transition: background 1.2s ease;
+}
+
+.bossAuraEnraged {
+  animation: auraPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes auraPulse {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 1; }
+}
+
+/* Entity + info stacked vertically */
+.bossEntityWrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+/* The dark shape representing the boss */
+.bossEntity {
+  width: clamp(80px, 14vw, 140px);
+  height: clamp(80px, 14vw, 140px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 35%,
+    rgba(30, 20, 50, 0.9) 0%,
+    rgba(10, 8, 20, 0.97) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--boss-color) 35%, transparent);
+  box-shadow:
+    0 0 20px color-mix(in srgb, var(--boss-color) 25%, transparent),
+    0 0 60px color-mix(in srgb, var(--boss-color) 10%, transparent),
+    inset 0 0 30px rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow 1s ease, border-color 1s ease;
+  animation: entityFloat 4s ease-in-out infinite;
+}
+
+.bossEntityEnraged {
+  animation: entityFloatEnraged 2s ease-in-out infinite;
+  box-shadow:
+    0 0 30px color-mix(in srgb, var(--boss-color) 40%, transparent),
+    0 0 80px color-mix(in srgb, var(--boss-color) 18%, transparent),
+    inset 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes entityFloat {
+  0%, 100% { transform: translateY(0);    }
+  50%       { transform: translateY(-8px); }
+}
+
+@keyframes entityFloatEnraged {
+  0%, 100% { transform: translateY(0) scale(1);      }
+  50%       { transform: translateY(-6px) scale(1.04); }
+}
+
+/* Glowing eye / core inside the entity */
+.bossEntityInner {
+  width: 28%;
+  height: 28%;
+  border-radius: 50%;
+  background: var(--boss-color);
+  opacity: 0.6;
+  filter: blur(6px);
+  animation: corePulse 2s ease-in-out infinite;
+}
+
+@keyframes corePulse {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50%       { opacity: 0.9; transform: scale(1.15); }
+}
+
+/* Text block below the entity */
+.bossArenaInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-align: center;
+}
+
+.bossArenaPhase {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.bossArenaName {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.2vw, 1.6rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.bossArenaHpBar {
+  width: clamp(100px, 16vw, 200px);
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bossArenaHpFill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bossArenaHpText {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-dim);
+}
+
 .arenaRight {
   grid-column: 3;
   grid-row: 2 / 4;
