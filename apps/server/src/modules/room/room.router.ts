@@ -4,13 +4,11 @@ import { roomRepository } from '../room/room.repository'
 
 export const roomRouter = Router()
 
-const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-
 function generateRoomCode(): string {
     const bytes = crypto.randomBytes(6)
     let code = ''
     for (let i = 0; i < 6; i++) {
-        code += ALPHABET[bytes[i] % ALPHABET.length]
+        code += bytes[i] % 10
     }
     return code
 }
@@ -39,7 +37,7 @@ roomRouter.post('/', async (_req, res) => {
 
 /** GET /api/rooms/:code — информация о комнате */
 roomRouter.get('/:code', async (req, res) => {
-    const code = String(req.params.code || '').toUpperCase().slice(0, 6)
+    const code = String(req.params.code || '').replace(/[^0-9]/g, '').slice(0, 6)
     try {
         const players = await roomRepository.getPlayers(code)
         res.json({ code, playerCount: players.length, capacity: 2 })

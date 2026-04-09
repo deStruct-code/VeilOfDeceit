@@ -66,7 +66,7 @@ export function setupLobbyWS(wss: WebSocketServer) {
                 return
             }
 
-            const roomCode = String(msg.roomCode || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6)
+            const roomCode = String(msg.roomCode || '').replace(/[^0-9]/g, '').slice(0, 6)
             const playerId = String(msg.playerId || '').trim()
             const playerName = String(msg.playerName || '').trim().slice(0, 24) || 'Shadow'
             const cardBack = String(msg.cardBackId || 'veil-mandala').trim()

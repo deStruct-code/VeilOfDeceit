@@ -42,3 +42,5 @@ out/
 
 # ok
 .ini
+.cmd
+.claude
