@@ -1,0 +1,1 @@
+export {CARD_TEMPLATES, CARDS_PER_TEMPLATE }from './cards/cards.config'

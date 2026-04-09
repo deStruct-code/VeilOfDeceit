@@ -28,7 +28,9 @@ Size of a bg wil be 1024x1024.
 [x] Make a 6digits code generation from server. Now everyone can type any code and share it with friend. It is not what I want to. SEVERENITY: HIGH
 [x] Make a "Share" button while waiting a second player. Link will be a full from search line.
 [x] LobbyPage and RoomPage are repeating each other. Which is working? Use only one of them. Keep DRY principle. 
-[] Make a flipping Card-effect the main mechanic of a game. Use FSD-structure and refactor existing code from LobbyPage.
+[x] Make a random boss in the battlefield. It should be widget
+[] Make a 6-digit code only using 
+[] Make a deck on the table: it should be a cards: 50 - 3 for first player and - 3 for second. It should be a widget
 
 
 -----INFO-----
@@ -168,7 +170,7 @@ veil-of-deceit/
 │
 ├── packages/
 │   ├── shared/          # общие типы, модели
-│   └── game-engine/     # чистая логика игры (ВАЖНО)
+│   └── game-engine/     # чистая логика игры 
 │
 ├── infra/               # деплой, env, configs
 │

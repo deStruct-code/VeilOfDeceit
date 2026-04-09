@@ -14,7 +14,8 @@
     "strict": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@veil/shared": ["../../packages/shared/src/index.ts"]
+      "@veil/shared": ["../../packages/shared/src/index.ts"],
+      "@veil/game-engine": ["../../packages/game-engine/src/index.ts"]
     }
   },
   "include": ["src"]
