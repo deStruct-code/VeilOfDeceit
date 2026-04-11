@@ -5,7 +5,7 @@ import { getOrCreatePlayerId } from '../../shared/lib/playerId'
 import { createLobbySocket, type LobbyServerMessage } from '../../shared/lib/ws'
 import { getOrGeneratePlayerName, getPlayerName } from '../../shared/lib/playerName'
 import { setRoomPlayerSlot, setAllyCardBack } from '../../shared/lib/playerSlot'
-import { getSelectedCardBack } from '../../entities/card/model/cardBack'
+import { getSelectedCardBack } from '../../entities/card/cardBack'
 import styles from './RoomPage.module.css'
 
 type ConnectionState = 'connecting' | 'waiting' | 'ready' | 'error'

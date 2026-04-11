@@ -25,8 +25,12 @@ export const gameApi = createApi({
       }),
       invalidatesTags: ['Game'],
     }),
-    resetGame: builder.mutation<GameState, { gameId: string }>({
-      query: ({ gameId }) => ({ url: `/game/${gameId}/reset`, method: 'POST' }),
+    resetGame: builder.mutation<GameState, { gameId: string; playerId?: string }>({
+      query: ({ gameId, playerId }) => ({
+        url: `/game/${gameId}/reset`,
+        method: 'POST',
+        body: { playerId },
+      }),
       invalidatesTags: ['Game'],
     }),
     createSoloGame: builder.mutation<GameState, { gameId: string; playerName: string }>({

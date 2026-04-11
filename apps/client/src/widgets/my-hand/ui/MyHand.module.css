@@ -1,0 +1,152 @@
+/* ─── MyHand ────────────────────────────────────────────────────────────────
+   Карты игрока — крупный веер по центру снизу.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  /* нет padding снизу — карты прилегают к нижнему краю зоны */
+  padding: 0 1rem 0.5rem;
+  /* высота фиксирована — ровно под карту */
+  height: 176px;
+  overflow: visible;
+}
+
+/* Контейнер веера: ширина и высота задаются инлайново */
+.fan {
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* Слот для каждой карты */
+.slot {
+  position: absolute;
+  top: 0;
+}
+
+/* ── Карта — крупная, читаемая ───────────────────────────────────── */
+
+.card {
+  width: 116px;
+  min-height: 160px;
+  padding: 0.7rem 0.65rem;
+  background: linear-gradient(160deg,
+    rgba(18, 12, 28, 0.95) 0%,
+    rgba(10, 7, 18, 0.98) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 3px solid var(--accent);
+  border-radius: 7px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  text-align: left;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  color: inherit;
+  font-family: inherit;
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.6),
+    0 0 0 0px transparent;
+  position: relative;
+}
+
+.card:hover:not(.disabled) {
+  transform: translateY(-14px);
+  box-shadow:
+    0 22px 44px rgba(0, 0, 0, 0.7),
+    0 0 18px rgba(0, 0, 0, 0.4);
+  z-index: 999 !important;
+}
+
+.selected {
+  transform: translateY(-22px) !important;
+  border-color: var(--accent) !important;
+  box-shadow:
+    0 26px 52px rgba(0, 0, 0, 0.75),
+    0 0 0 2px var(--accent),
+    0 0 28px color-mix(in srgb, var(--accent) 40%, transparent) !important;
+}
+
+.disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}
+
+/* ── Содержимое карты ────────────────────────────────────────────── */
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cardType {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.56rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+.cardCost {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--color-energy, #8b6914);
+  background: rgba(139, 105, 20, 0.12);
+  padding: 0 0.28rem;
+  border-radius: 2px;
+}
+
+.cardName {
+  font-family: 'Cinzel', serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-primary, #e8e4dc);
+  line-height: 1.25;
+  margin-top: 0.2rem;
+}
+
+.cardBottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.cardValue {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.cardEffect {
+  display: block;
+  font-size: 0.58rem;
+  color: rgba(232, 228, 220, 0.45);
+  line-height: 1.35;
+  font-style: italic;
+}
+
+/* ── Пустая рука ─────────────────────────────────────────────────── */
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 176px;
+  width: 100%;
+}
+
+.emptyText {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--veilofdeceit-gold-muted, rgba(180, 130, 60, 0.35));
+  text-transform: uppercase;
+}

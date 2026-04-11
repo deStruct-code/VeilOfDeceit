@@ -4,7 +4,7 @@ import { createLobbySocket, type LobbyServerMessage } from '../../../shared/lib/
 import { getOrGeneratePlayerName } from '../../../shared/lib/playerName'
 import { setRoomPlayerSlot, setAllyCardBack } from '../../../shared/lib/playerSlot'
 import { getOrCreatePlayerId } from '../../../shared/lib/playerId'
-import { getSelectedCardBack } from '../../../entities/card/model/cardBack'
+import { getSelectedCardBack } from '../../../entities/card/cardBack'
 
 export type RoomState = 'connecting' | 'waiting' | 'ready' | 'error'
 

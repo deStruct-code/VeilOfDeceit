@@ -1,121 +1,158 @@
+/* ─── RevealOverlay ─────────────────────────────────────────────────────────
+   Карты летят в центр арены и переворачиваются по очереди.
+   Все цвета — из темы.
+   ─────────────────────────────────────────────────────────────────────────── */
+
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(2px);
+  z-index: 100;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 100;
-  animation: fadeIn 0.25s ease;
+  gap: 1.5rem;
+  /* тёмная вуаль поверх арены */
+  background: rgba(4, 2, 12, 0.72);
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.2s ease;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.97); }
-  to   { opacity: 1; transform: scale(1); }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-.panel {
-  background: var(--surface-card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 2rem;
-  width: min(440px, 90vw);
+/* ── Ряд карт ────────────────────────────────────────────────────── */
+
+.cardRow {
   display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.phaseLabel {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  text-align: center;
-}
-
-.reveal   { color: var(--text-primary); }
-.boss_attack { color: var(--color-danger); }
-.new_cards { color: var(--color-energy); }
-.defeat   { color: var(--color-danger); }
-.victory  { color: #fbbf24; }
-
-.flipRow {
-  display: flex;
+  align-items: flex-end;
   justify-content: center;
-  gap: 1rem;
-  padding: 0.5rem 0;
+  gap: 1.25rem;
+  /* начальное состояние: карты снизу, прозрачные */
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
-.reveals {
+/* карты "выехали" в центр */
+.cardRowVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Слот одной карты + подпись */
+.cardSlot {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem;
-  background: rgba(255,255,255,0.03);
-  border-radius: 8px;
-  border: 1px solid var(--border);
 }
 
-.revealRow {
+/* Имя игрока под картой */
+.cardOwner {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--veilofdeceit-purple-text, #c09ee0);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease 0.2s, transform 0.3s ease 0.2s;
+}
+
+.cardOwnerVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cardOwnerLocal {
+  color: var(--veilofdeceit-gold-text, #d4b878);
+}
+
+/* ── Эффекты ─────────────────────────────────────────────────────── */
+
+.effects {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(9, 9, 16, 0.75);
+  border: 1px solid rgba(180, 130, 60, 0.15);
+  border-radius: 8px;
+  backdrop-filter: blur(8px);
+  animation: slideUp 0.25s ease;
+  min-width: 280px;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.effectRow {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
 }
 
-.revealPlayer {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  min-width: 2.5rem;
-}
-.revealCard {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-.revealDmg    { color: var(--color-danger); font-family: var(--font-mono); font-size: 0.75rem; margin-left: auto; }
-.revealShield { color: #60a5fa; font-family: var(--font-mono); font-size: 0.75rem; margin-left: auto; }
-.revealStatus { color: #a855f7; font-family: var(--font-mono); font-size: 0.75rem; margin-left: auto; }
-
-.log {
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-  max-height: 120px;
-  overflow-y: auto;
+.effectName {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--veilofdeceit-purple-text, #c09ee0);
+  min-width: 5rem;
+  flex-shrink: 0;
 }
 
-.logLine {
+.effectNameLocal {
+  color: var(--veilofdeceit-gold-text, #d4b878);
+}
+
+.effectCard {
+  font-family: 'Cinzel', serif;
   font-size: 0.78rem;
-  line-height: 1.5;
-  margin: 0;
+  font-weight: 700;
+  color: var(--text-primary, #e8e4dc);
+  flex: 1;
 }
-.damage { color: #f87171; }
-.status { color: #a855f7; }
-.boss   { color: var(--color-danger); }
-.system { color: var(--text-muted); }
+
+.effectDmg    { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #ef4444; margin-left: auto; flex-shrink: 0; }
+.effectShield { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #60a5fa; margin-left: auto; flex-shrink: 0; }
+.effectStatus { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #a855f7; margin-left: auto; flex-shrink: 0; }
+
+/* ── Кнопка (только для финала) ─────────────────────────────────── */
 
 .btn {
-  padding: 0.75rem;
-  font-family: var(--font-display);
-  font-size: 0.95rem;
+  padding: 0.65rem 2rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
   font-weight: 700;
-  letter-spacing: 0.05em;
-  background: var(--color-commit);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: opacity 0.2s, transform 0.15s;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  background: linear-gradient(135deg,
+    rgba(100, 60, 10, 0.8) 0%,
+    rgba(70, 35, 5, 0.9) 50%,
+    rgba(90, 50, 8, 0.8) 100%);
+  color: var(--veilofdeceit-gold-text, #d4b878);
+  border: 1px solid rgba(180, 130, 60, 0.4);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  animation: slideUp 0.3s ease;
 }
-.btn:hover { opacity: 0.85; transform: scale(1.01); }
-.btnEnd { background: #1e293b; border: 1px solid var(--border); }
 
-/* подсветка строки локального игрока */
-.revealRowLocal .revealPlayer {
-  color: var(--color-ready, #4ade80);
+.btn:hover {
+  background: linear-gradient(135deg,
+    rgba(140, 90, 20, 0.95) 0%,
+    rgba(100, 55, 10, 1) 50%,
+    rgba(120, 70, 15, 0.95) 100%);
+  color: #f5dc8a;
+  border-color: rgba(220, 170, 70, 0.65);
+}
+
+.btnEnd {
+  background: rgba(9, 9, 16, 0.7);
+  border-color: rgba(180, 130, 60, 0.2);
 }

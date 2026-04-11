@@ -1,0 +1,247 @@
+/* ─── GameBoard ──────────────────────────────────────────────────────────────
+   Схема (как на референсе):
+
+   ┌─────────────────────────────────────────┐
+   │  [лог]      [BOSS]      [таймер]        │  topBar  88px
+   ├─────────────────────────────────────────┤
+   │                                         │
+   │  [discard] [ally cards] [deck]          │  arena — flex: 1
+   │                                         │
+   │                                         │
+   │  [ally stats] │ [my stats]              │  statsRow
+   │  [   my cards — large fan   ]           │  myHandZone
+   │  [   action buttons         ]           │  actionsBar
+   └─────────────────────────────────────────┘
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Корень ──────────────────────────────────────────────────────── */
+
+.board {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   TOP BAR
+   ══════════════════════════════════════════════════════════════════ */
+
+.topBar {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  height: 120px;
+  flex-shrink: 0;
+  background: rgba(9, 9, 16, 0.72);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(180, 130, 60, 0.12);
+  z-index: 10;
+  position: relative;
+}
+
+.topLeft {
+  padding: 0.5rem 0.75rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.topCenter { overflow: hidden; }
+
+.topRight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.5rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ── Лог ─────────────────────────────────────────────────────────── */
+
+.logList { display: flex; flex-direction: column; gap: 0.1rem; }
+
+.logLine {
+  margin: 0;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.55rem;
+  line-height: 1.4;
+  color: rgba(200, 190, 170, 0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.damage { color: rgba(239, 68, 68, 0.65); }
+.status { color: rgba(168, 85, 247, 0.65); }
+.boss   { color: rgba(232, 201, 122, 0.65); }
+.system { color: rgba(200, 190, 170, 0.45); }
+
+/* ── Таймер / ход ────────────────────────────────────────────────── */
+
+.timerBlock { display: flex; align-items: baseline; gap: 3px; }
+
+.timerDigit {
+  font-family: 'Cinzel', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--veilofdeceit-gold-primary, #e8c97a);
+  line-height: 1;
+  transition: color 0.3s;
+}
+
+.timerUrgent {
+  color: #ef4444;
+  animation: pulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 1; }
+  to   { opacity: 0.5; }
+}
+
+.timerLabel {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.55rem;
+  color: rgba(212, 184, 120, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.turnBadge {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(212, 184, 120, 0.4);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ARENA — середина экрана, занимает всё свободное пространство
+   Союзник, колода, сброс — абсолютно поверх фона
+   ══════════════════════════════════════════════════════════════════ */
+
+.arena {
+  position: relative;
+  flex: 1;         /* занимает всё между topBar и bottomArea */
+  min-height: 0;   /* важно для flex-дочерних элементов */
+  overflow: hidden;
+}
+
+/* Карты союзника — центр арены, уменьшены (перспектива "вдалеке") */
+.allyHandArea {
+  position: absolute;
+  top: 50%;
+  left: 90%;
+  transform: translateX(-50%) scale(0.8);
+  transform-origin: top center;
+  z-index: 5;
+  opacity: 0.9;
+}
+
+/* Общая колода — правый угол арены */
+.deckArea {
+  position: absolute;
+  top: 20rem;
+  right: 20px;
+  z-index: 7;
+}
+
+/* Сброс — левый угол арены */
+.discardArea {
+  position: absolute;
+  top: 12px;
+  left: 20px;
+  z-index: 5;
+  opacity: 0.65;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   BOTTOM AREA — статы + карты игрока + кнопки
+   ══════════════════════════════════════════════════════════════════ */
+
+.bottomArea {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  position: relative;
+  /* overflow visible нужен чтобы hover-подъём карт не обрезался */
+  overflow: visible;
+}
+
+/* Панель статов — одна строка по центру */
+.statsRow {
+  background: rgba(9, 9, 16, 0.65);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Зона карт — фон затемняет низ экрана, карты поднимаются вверх */
+.myHandZone {
+  background: rgba(9, 9, 16, 0.45);
+  backdrop-filter: blur(6px);
+  /* Карты поднимаются вверх на hover — нужен padding сверху */
+  padding-top: 32px;
+  /* Карты рисуются поверх padding-зоны */
+  overflow: visible;
+  position: relative;
+}
+
+/* ── Кнопки ──────────────────────────────────────────────────────── */
+
+.actionsBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 1rem;
+  background: rgba(9, 9, 16, 0.8);
+  border-top: 1px solid rgba(180, 130, 60, 0.1);
+}
+
+.btnSubmit {
+  font-family: 'Cinzel', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  padding: 0.5rem 1.4rem;
+  background: linear-gradient(135deg,
+    rgba(100, 60, 10, 0.7) 0%,
+    rgba(70, 35, 5, 0.85) 50%,
+    rgba(90, 50, 8, 0.75) 100%);
+  color: var(--veilofdeceit-gold-text, #d4b878);
+  border: 1px solid rgba(180, 130, 60, 0.35);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btnSubmit:hover {
+  background: linear-gradient(135deg,
+    rgba(140, 90, 20, 0.9) 0%,
+    rgba(100, 55, 10, 0.95) 50%,
+    rgba(120, 70, 15, 0.9) 100%);
+  color: #f5dc8a;
+  border-color: rgba(220, 170, 70, 0.6);
+}
+
+.btnSkip {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  padding: 0.5rem 1rem;
+  background: rgba(9, 9, 16, 0.5);
+  color: rgba(180, 130, 60, 0.5);
+  border: 1px solid rgba(180, 130, 60, 0.15);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.btnSkip:hover {
+  color: var(--veilofdeceit-gold-text, #d4b878);
+  border-color: rgba(180, 130, 60, 0.3);
+}

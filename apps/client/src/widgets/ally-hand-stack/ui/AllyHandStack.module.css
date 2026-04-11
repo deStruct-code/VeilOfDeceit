@@ -1,0 +1,57 @@
+/* ─── AllyHandStack ─────────────────────────────────────────────────────────
+   Карты союзника — горизонтальный ряд рубашек, "вдали" на арене.
+   Масштаб и прозрачность задаются снаружи через .allyHandArea в GameBoard.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  user-select: none;
+}
+
+/* Одна рубашка */
+.card {
+  width: 56px;
+  height: 78px;
+  border-radius: 5px;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.6),
+    0 0 6px rgba(120, 70, 180, 0.15),
+    inset 0 1px 0 rgba(180, 130, 60, 0.06);
+  /* Лёгкий наклон чередующихся карт — ощущение "брошенных" карт */
+  transition: transform 0.2s ease;
+}
+
+.card:nth-child(odd)  { transform: rotate(-1.5deg); }
+.card:nth-child(even) { transform: rotate(1.5deg); }
+
+/* Значок если карт больше MAX_VISIBLE */
+.overflow {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.65rem;
+  color: var(--veilofdeceit-purple-primary, #d4a8ff);
+  align-self: center;
+  padding: 0 4px;
+  opacity: 0.7;
+}
+
+/* Пустое состояние */
+.emptyRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 78px;
+  min-width: 120px;
+}
+
+.emptyText {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--veilofdeceit-purple-muted, #a07bc8);
+  opacity: 0.4;
+}

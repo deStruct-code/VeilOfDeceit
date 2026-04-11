@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import type { Card } from '@veil/shared'
-import type { CardBackId } from '../../model/cardBack'
+import type { CardBackId } from '../../cardBack'
 import { CARD_BACK_COMPONENTS } from '../card-backs/cardBackComponents'
 import { FlipCard } from '../../../../shared/ui/FlipCard'
 import styles from './FlippableCard.module.css'

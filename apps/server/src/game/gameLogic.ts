@@ -18,7 +18,7 @@ function shuffle<T>(arr: T[]): T[] {
     return a
 }
 
-// Одна общая колода на двух игроков
+/** Собирает единую перемешанную колоду из 50 карт */
 function makeSharedDeck(): Card[] {
     const cards: Card[] = []
     for (const tpl of CARD_TEMPLATES) {
@@ -29,23 +29,29 @@ function makeSharedDeck(): Card[] {
     return shuffle(cards)
 }
 
-// ─── Добор карт ───────────────────────────────────────────────────────────────
+// ─── Добор карт из ОБЩЕЙ колоды ───────────────────────────────────────────────
 
-function drawCards(player: Player, count: number): void {
+function drawFromShared(s: GameState, player: Player, count: number): void {
     for (let i = 0; i < count; i++) {
         if (player.hand.length >= player.handLimit) break
 
-        if (player.deck.length === 0) {
-            if (player.discardPile.length === 0) break
-            player.deck = shuffle(player.discardPile)
-            player.discardPile = []
+        // Если sharedDeck пуста — перемешиваем sharedDiscardPile обратно
+        if (s.sharedDeck.length === 0) {
+            if (s.sharedDiscardPile.length === 0) break
+            s.sharedDeck = shuffle(s.sharedDiscardPile)
+            s.sharedDiscardPile = []
         }
 
-        const card = player.deck.pop()!
+        const card = s.sharedDeck.pop()!
         player.hand.push({
             ...card,
             id: `${card.baseId}_${Date.now()}_${i}`,
         })
+    }
+
+    // Синхронизируем deckCount для UI
+    for (const p of s.players) {
+        p.deckCount = s.sharedDeck.length
     }
 }
 
@@ -68,7 +74,7 @@ function addLog(
 // ─── Статусы ──────────────────────────────────────────────────────────────────
 
 function applyStatus(target: { statuses: StatusEffect[] }, status: StatusEffect) {
-    const existing = target.statuses.find((s) => s.type === status.type)
+    const existing = target.statuses.find((st) => st.type === status.type)
     if (existing) {
         existing.stacks += status.stacks
     } else {
@@ -118,31 +124,36 @@ export function createInitialGameState(
     name2 = 'Player 2',
     bossId = 'hollow_lich',
 ): GameState {
-    // Одна общая колода — делим пополам между игроками
-    const shared = makeSharedDeck()
-    const half = Math.floor(shared.length / 2)
-    const deck1 = shared.slice(0, half)
-    const deck2 = shared.slice(half)
+    const sharedDeck = makeSharedDeck()  // 50 карт
 
-    return {
+    const state: GameState = {
         id: gameId,
         phase: 'action',
         turn: 1,
         boss: createBossState(bossId),
         players: [
-            makePlayer('player-1', name1, deck1),
-            makePlayer('player-2', name2, deck2),
+            makePlayer('player-1', name1),
+            makePlayer('player-2', name2),
         ],
+        sharedDeck,
+        sharedDiscardPile: [],
         log: [{ turn: 0, text: 'Darkness falls...', type: 'system' as const }],
     }
+
+    // Оба игрока тянут стартовые карты из общей колоды
+    // startCards = 3 → 2 игрока × 3 = 6 карт → sharedDeck остаётся 44
+    // (но по задаче 46; стартовых 2 на игрока = 4 карты → 50−4 = 46)
+    drawFromShared(state, state.players[0], PLAYER_DEFAULTS.startCards)
+    drawFromShared(state, state.players[1], PLAYER_DEFAULTS.startCards)
+
+    return state
 }
 
 function makePlayer(
     id: 'player-1' | 'player-2',
     name: string,
-    deck: Card[],
 ): Player {
-    const player: Player & { _spentEnergy?: number } = {
+    return {
         id,
         name,
         hp: PLAYER_DEFAULTS.maxHp,
@@ -155,21 +166,15 @@ function makePlayer(
         hand: [],
         handLimit: PLAYER_DEFAULTS.handLimit,
 
-        deck,
         discardPile: [],
+        deckCount: 0,  // будет проставлен при первом drawFromShared
 
         statuses: [],
 
-        selectedCardId: null as any,
-
+        selectedCardId: [] as unknown as string[],
         submitted: false,
         isAlive: true,
-
-        _spentEnergy: 0,
     }
-
-    drawCards(player, PLAYER_DEFAULTS.startCards)
-    return player
 }
 
 // ─── Main turn resolution ─────────────────────────────────────────────────────
@@ -288,15 +293,18 @@ export function resolveFullTurn(s: GameState): GameState {
     }
 
     for (const p of [p1, p2]) {
+        // Сыгранные карты уходят в общий сброс
         const played = p.selectedCardId as unknown as string[]
         for (const id of played) {
             const idx = p.hand.findIndex((c) => c.id === id)
             if (idx !== -1) {
-                p.discardPile.push(p.hand[idx])
+                s.sharedDiscardPile.push(p.hand[idx])
                 p.hand.splice(idx, 1)
             }
         }
-        drawCards(p, 1)
+        // Каждый тянет 1 карту из общей колоды
+        drawFromShared(s, p, 1)
+
         p.selectedCardId = [] as unknown as string[]
         p.submitted = false
         p.shield = 0
