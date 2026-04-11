@@ -38,6 +38,13 @@ export interface GameState {
     turn: number;
     boss: BossState;
     players: [Player, Player];
+    /**
+     * Общая колода обоих игроков — единственный источник карт.
+     * Оба игрока тянут из неё. При старте = 50 − 4 стартовые карты = 46.
+     */
+    sharedDeck: Card[];
+    /** Общий сброс — когда sharedDeck пустеет, перемешивается в неё. */
+    sharedDiscardPile: Card[];
     log: LogEntry[];
     lastReveal?: RevealEntry[];
     winner?: "players" | "boss";

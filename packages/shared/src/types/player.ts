@@ -34,15 +34,20 @@ export interface Player {
   // Карты
   hand:        Card[]   // текущая рука (не более handLimit)
   handLimit:   number   // максимум карт в руке (7)
-  deck:        Card[]   // личная колода (тянутся карты)
-  discardPile: Card[]   // сброс; когда deck пуст — перемешивается обратно
+  discardPile: Card[]   // личный сброс сыгранных карт
+
+  /**
+   * Количество карт в ОБЩЕЙ колоде — дублируется сюда для удобства UI.
+   * Реальный источник: GameState.sharedDeck.length
+   */
+  deckCount?: number
 
   // Статусы: бафы (до MAX_BUFFS) + дебафы (до MAX_DEBUFFS)
   statuses: StatusEffect[]
 
   // Состояние хода
   selectedCardId: string[]  // выбранные карты до сабмита
-  submitted:      boolean         // подтвердил ли ход
+  submitted:      boolean   // подтвердил ли ход
 
   // Живой?
   isAlive: boolean

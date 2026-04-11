@@ -1,7 +1,7 @@
-import type { Boss } from '../../shared/types/game'
+import type { BossState } from '@veil/shared'
 import styles from './BossPanel.module.css'
 
-interface Props { boss: Boss }
+interface Props { boss: BossState }
 
 const actionIcon: Record<string, string> = {
   attack: '⚔', status: '☽', attack_status: '⚔☽',
@@ -30,7 +30,7 @@ export function BossPanel({ boss }: Props) {
         <div className={styles.nextAction}>
           <span className={styles.actionLabel}>Next</span>
           <div className={styles.actionCard}>
-            <span>{actionIcon[boss.nextAction.type] ?? '?'}</span>
+            <span>{actionIcon[boss.nextAction.kind] ?? '?'}</span>
             <span className={styles.actionName}>{boss.nextAction.label}</span>
             {boss.nextAction.damage && (
               <span className={styles.actionDmg}>−{boss.nextAction.damage} HP</span>

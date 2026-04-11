@@ -10,11 +10,11 @@
   position: fixed;
   inset: 0;
   z-index: 0;
-  background-image: url('/assets/backgrounds/bg1.webp');
+  background-image: url('/assets/backgrounds/bg3.png');
   background-size: cover;
   background-position: center top;
   background-repeat: no-repeat;
-  filter: brightness(0.5) saturate(0.8);
+  /* filter: brightness(0.5) saturate(0.8); */
   pointer-events: none;
 }
 

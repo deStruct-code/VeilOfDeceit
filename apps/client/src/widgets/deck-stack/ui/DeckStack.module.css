@@ -1,0 +1,81 @@
+/* ─── DeckStack ─────────────────────────────────────────────────────────────
+   Виджет стопки карт в игровом поле.
+   Все цвета — из темы (CSS variables).
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  user-select: none;
+}
+
+/* Контейнер стопки — фиксированный размер, не скачет при count=0 */
+.stack {
+  position: relative;
+  width: 60px;
+  height: 84px;
+  flex-shrink: 0;
+}
+
+/* Каждый слой — одна рубашка */
+.layer {
+  position: absolute;
+  width: 54px;
+  height: 76px;
+  border-radius: 4px;
+  overflow: hidden;
+  transition: opacity 0.25s ease;
+  /* Тень в стиле темы */
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.7),
+    0 0 6px rgba(100, 40, 160, 0.18),
+    inset 0 1px 0 rgba(180, 130, 60, 0.06);
+}
+
+/* Dim-состояние при пустой колоде */
+.empty .layer {
+  filter: grayscale(0.6) brightness(0.4);
+}
+
+/* Счётчик карт */
+.counter {
+  position: absolute;
+  bottom: -2px;
+  right: -6px;
+  z-index: 10;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--veilofdeceit-gold-primary, #e8c97a);
+
+  background: rgba(9, 9, 16, 0.92);
+  border: 1px solid rgba(180, 130, 60, 0.35);
+  border-radius: 10px;
+
+  box-shadow:
+    0 0 6px rgba(100, 40, 160, 0.25),
+    0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.counterEmpty {
+  color: var(--veilofdeceit-gold-muted, rgba(180, 130, 60, 0.6));
+  border-color: rgba(180, 130, 60, 0.15);
+}
+
+/* Лейбл */
+.label {
+  font-family: var(--font-heading, 'Cinzel', serif);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--veilofdeceit-gold-muted, rgba(180, 130, 60, 0.6));
+}

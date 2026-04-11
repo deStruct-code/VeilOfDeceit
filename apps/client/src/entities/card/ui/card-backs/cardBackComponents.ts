@@ -1,4 +1,4 @@
-import type { CardBackId } from '../../model/cardBack'
+import type { CardBackId } from '../../cardBack'
 import { CardBackVeilMandala } from './CardBackVeilMandala'
 import { CardBackBloodpact } from './CardBackBloodpact'
 import { CardBackDeadStar } from './CardBackDeadStar'

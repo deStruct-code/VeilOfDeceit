@@ -1,0 +1,15 @@
+/* DiscardStack — зеркало DeckStack, слои смещаются вправо */
+
+/* Контейнер чуть шире чтобы правое смещение слоёв не обрезалось */
+.stack {
+  position: relative;
+  width: 60px;
+  height: 84px;
+  flex-shrink: 0;
+}
+
+/* Счётчик — зеркально слева вместо справа */
+.counter {
+  left: -6px;
+  right: auto;
+}
