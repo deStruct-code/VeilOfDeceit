@@ -1,9 +1,10 @@
 import type { Card, GameState, Player, StatusEffect } from '@veil/shared'
 import { PLAYER_DEFAULTS } from '@veil/shared'
 import {
-    createBossState,
+    createRandomBossState,
     pickNextBossAction,
     checkPhaseTransition,
+    createBossState,
 } from '../bosses/bossRegistry'
 import { CARD_TEMPLATES, CARDS_PER_TEMPLATE } from '@veil/game-engine'
 
